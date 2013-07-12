@@ -1,0 +1,41 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    antlr4
+}
+
+dependencies {
+    antlr4 'org.antlr:antlr4:4.0'
+    compile ('org.antlr:antlr4-runtime:4.0',
+            'junit:junit:4.10',
+            'com.google.guava:guava:15.0')
+    test ('org.mockito:mockito-all:1.9.5')
+}
+
+// TODO - this is busted for multiple .g4 files in the antlr directory...
+
+task generateGrammarSources(type: JavaExec) {
+    ext.grammarFiles = fileTree('src/main/antlr4').include('**/*.g4')
+    ext.outputPath = "${project.buildDir}/generated-src/antlr4/main/java/dbtools"
+    inputs.files grammarFiles
+    outputs.dir outputPath
+    classpath configurations.antlr4
+    main = 'org.antlr.v4.Tool'
+    args('-package')
+    args('dbtools')
+    args('-o')
+    args("${project.buildDir}/generated-src/antlr4/main/java/dbtools")
+    args('-visitor')
+    args(grammarFiles.files.join(' '))
+
+}
+
+sourceSets.main.java.srcDir generateGrammarSources.outputPath
+compileJava.dependsOn generateGrammarSources
+
+
+
