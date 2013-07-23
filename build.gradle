@@ -13,7 +13,7 @@ dependencies {
     compile ('org.antlr:antlr4-runtime:4.0',
             'junit:junit:4.10',
             'com.google.guava:guava:15.0')
-    test ('org.mockito:mockito-all:1.9.5')
+    testCompile ('org.mockito:mockito-all:1.9.5')
 }
 
 // TODO - this is busted for multiple .g4 files in the antlr directory...
