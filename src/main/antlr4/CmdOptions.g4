@@ -2,13 +2,14 @@ grammar CmdOptions;
 
 // parser rules start with lowercase letters, lexer rules with uppercase
 
-option : '-' command | '--' command;
+init : command (command)*;
 
-command : NUMBER | ALPHA;
+command : DASH ALPHA (ALPHA)?;
 
-fragment DIGIT  : '0'..'9' ;
-fragment LETTER : 'a'..'z' | 'A'..'Z' ;
+DASH : '--' | '-';
 
-NUMBER : DIGIT+ ;
-ALPHA : LETTER+ ;
+ALPHA : ('a'..'z'|'A'..'Z'|'0'..'9'|'.')+;
 
+WS
+    : [ \t\r\n]+ -> skip
+    ;
