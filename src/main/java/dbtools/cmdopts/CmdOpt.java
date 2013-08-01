@@ -2,8 +2,6 @@ package dbtools.cmdopts;
 
 import com.google.common.base.Optional;
 
-import static com.google.common.base.Optional.fromNullable;
-
 public class CmdOpt {
     private final String name;
     private final Optional<String> value;
@@ -34,8 +32,8 @@ public class CmdOpt {
             return this;
         }
 
-        public CmdOptBuilder withValue(String value) {
-            this.value = fromNullable(value);
+        public CmdOptBuilder withValue(Optional<String> value) {
+            this.value = value;
             return this;
         }
 

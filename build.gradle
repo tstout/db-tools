@@ -8,11 +8,16 @@ configurations {
     antlr4
 }
 
+ext {
+    GUAVA_VERSION = '14.0.1'
+}
+
+
 dependencies {
     antlr4 'org.antlr:antlr4:4.0'
     compile ('org.antlr:antlr4-runtime:4.0',
             'junit:junit:4.10',
-            'com.google.guava:guava:14.0.1')
+            "com.google.guava:guava:$GUAVA_VERSION")
     testCompile ('org.mockito:mockito-all:1.9.5')
 }
 
