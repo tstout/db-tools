@@ -6,7 +6,7 @@ import dbtools.CmdOptionsParser;
 
 import static com.google.common.base.Optional.fromNullable;
 
-public class CmdOptListener extends CmdOptionsBaseListener {
+class CmdOptListener extends CmdOptionsBaseListener {
     private Cmd cmd;
 
     public Cmd cmd() {

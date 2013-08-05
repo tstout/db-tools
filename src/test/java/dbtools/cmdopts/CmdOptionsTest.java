@@ -1,15 +1,20 @@
 package dbtools.cmdopts;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 public class CmdOptionsTest {
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Test
     public void multipleOptions() {
-        Cmd cmd = new ToolOptionParser().parse("cmd --opt val1 --opt2 val2 -opt3");
+        Cmd cmd = new ToolOptionParser().parse("cmd --opt val1 --opt2 val2   -opt3");
 
         assertThat(cmd.name(), is("cmd"));
         assertThat(cmd.options().size(), is(3));
@@ -29,11 +34,17 @@ public class CmdOptionsTest {
         assertThat(cmd.options().size(), is(0));
     }
 
-    //@Test
+    @Test
     public void invalidOption() {
-        // TODO - add ANTLR error listener that throws exception...
+        thrown.expect(OptParseException.class);
+
         Cmd cmd = new ToolOptionParser().parse("--cmdstr");
     }
 
-
+    @Test
+    public void singleCmdNoOption() {
+        Cmd cmd = new ToolOptionParser().parse("singlecmd");
+        assertThat(cmd.options().size(), is(0));
+        assertThat(cmd.name(), is("singlecmd"));
+    }
 }
