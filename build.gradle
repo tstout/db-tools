@@ -21,10 +21,8 @@ dependencies {
     testCompile ('org.mockito:mockito-all:1.9.5')
 }
 
-// TODO - this is busted for multiple .g4 files in the antlr directory...
-
 task generateGrammarSources(type: JavaExec) {
-    ext.grammarFiles = fileTree('src/main/antlr4').include('**/*.g4')
+    def grammarFiles = fileTree('src/main/antlr4').include('**/*.g4')
     ext.outputPath = "${project.buildDir}/generated-src/antlr4/main/java/dbtools"
     inputs.files grammarFiles
     outputs.dir outputPath
@@ -35,7 +33,7 @@ task generateGrammarSources(type: JavaExec) {
     args('-o')
     args("${project.buildDir}/generated-src/antlr4/main/java/dbtools")
     args('-visitor')
-    args(grammarFiles.files.join(' '))
+    args(grammarFiles.files)
 
 }
 
