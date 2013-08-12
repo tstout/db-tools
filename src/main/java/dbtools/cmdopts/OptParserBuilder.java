@@ -2,6 +2,7 @@ package dbtools.cmdopts;
 
 import dbtools.CmdOptionsLexer;
 import dbtools.CmdOptionsParser;
+import dbtools.parsing.ThrowingSyntaxErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -21,7 +22,7 @@ public class OptParserBuilder {
 
         CmdOptionsParser parser = new CmdOptionsParser(tokenStream());
         parser.removeErrorListeners();
-        parser.addErrorListener(new SyntaxErrorListener());
+        parser.addErrorListener(new ThrowingSyntaxErrorListener());
 
         return parser.command();
     }
