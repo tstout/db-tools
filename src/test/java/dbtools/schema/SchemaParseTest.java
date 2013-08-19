@@ -5,20 +5,16 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import static dbtools.schema.TestInput.*;
+
 public class SchemaParseTest {
     @Test
     public void parseEmptyTable() {
-//        SyntaxErrorListener errors = new SyntaxErrorListener();
-//
-//        ParseTree tree = new SchemaParserBuilder()
-//                .withDef(" table name ()")
-//                .withErrListener(errors)
-//                .build();
-//
-//        errors.printErrors();
 
+        SchemaDef def = new SchemaParser().parse(EMPTY_TABLE.input());
+        new SchemaParser().printTree(EMPTY_TABLE.input());
 
-        SchemaDef def = new SchemaParser().parse("table name ()");
         assertThat(def.tables().size(), not(0));
+        assertThat(def.tables().get(0).name(), is("table_name"));
     }
 }

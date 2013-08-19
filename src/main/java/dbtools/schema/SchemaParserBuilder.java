@@ -1,13 +1,14 @@
 package dbtools.schema;
 
 import com.google.common.base.Optional;
-import dbtools.CmdOptionsLexer;
+import dbtools.DBSchemaLexer;
 import dbtools.DBSchemaParser;
 import dbtools.parsing.SyntaxErrorListener;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
+
+import static com.google.common.base.Preconditions.*;
 
 public class SchemaParserBuilder {
     private String schemaDef;
@@ -23,20 +24,22 @@ public class SchemaParserBuilder {
         return this;
     }
 
-    public ParseTree build() {
+    public DBSchemaParser build() {
+        checkNotNull(schemaDef, "schema dbtools.schema.input required");
+
         DBSchemaParser parser = new DBSchemaParser(tokenStream());
         parser.removeErrorListeners();
         parser.addErrorListener(listener.or(new SyntaxErrorListener()));
 
-        return parser.schemadef();
+        return parser;
     }
 
     ANTLRInputStream stream() {
-        return new ANTLRInputStream(schemaDef.toCharArray(), schemaDef.length());
+        return new ANTLRInputStream(schemaDef);
     }
 
-    CmdOptionsLexer lexer() {
-        return new CmdOptionsLexer(stream());
+    DBSchemaLexer lexer() {
+        return new DBSchemaLexer(stream());
     }
 
     CommonTokenStream tokenStream() {
