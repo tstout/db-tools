@@ -4,13 +4,21 @@ public class ColDef {
     private final ColType type;
     private final String name;
 
-    ColDef(ColType type, String name) {
+    private ColDef(ColType type, String name) {
         this.type = type;
         this.name = name;
     }
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public ColType type() {
+        return type;
+    }
+
+    public String name() {
+        return name;
     }
 
     public static class Builder {

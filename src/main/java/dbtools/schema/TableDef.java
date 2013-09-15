@@ -20,4 +20,27 @@ public class TableDef {
         this.name = name;
         this.columns = copyOf(columns);
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String name;
+        private List<ColDef> columns;
+
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder withColumns(List<ColDef> columns) {
+            this.columns = columns;
+            return this;
+        }
+
+        public TableDef build() {
+            return new TableDef(name, columns);
+        }
+    }
 }

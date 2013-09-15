@@ -1,4 +1,4 @@
 table table_name (
     idCol int
-    ,charCol char(10)
+    ,charCol char
  )
