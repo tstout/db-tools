@@ -1,36 +1,23 @@
 grammar DBSchema;
 
-
-//
-// table log (
-//
 schemadef:
     tabledef*;   // more to follow...
 
 tabledef:
-    WSPACE* 'table' WSPACE* tablename WSPACE* '(' WSPACE* coldef* WSPACE* ')'
+    'table' tablename '(' colDef? (',' colDef)* ')'
     ;
+
+colType : 'int' | 'char' | 'bit'
+        ;
+
+colName : NAME
+        ;
+          
+colDef : colName colType
+       ;          
 
 tablename:
-    NAME+
-    ;
-
-coldef:
-    NAME (intcol | charcol) WSPACE*
-    |
-    NAME (intcol | charcol) WSPACE* ','
-    ;
-
-intcol:
-    INT_TYPE
-    ;
-
-charcol:
-    CHAR_TYPE WSPACE* '(' INT ')'
-    ;
-
-coltype:
-    INT
+    NAME
     ;
 
 COMMENT : '/*' .*? '*/' -> skip
@@ -39,6 +26,9 @@ COMMENT : '/*' .*? '*/' -> skip
 LINE_COMMENT:
     '//' .*? ('\n'|'\r') -> skip
     ;
+
+fragment
+COLNAME : NAME;
 
 NAME:
     ('a'..'z' | 'A'..'Z' | '0'..'9' | '_')+
