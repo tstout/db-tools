@@ -22,9 +22,7 @@ public enum ColType {
                     .put(BOOL.typeName, BOOL)
                     .build();
 
-    public ColType parse(String typeName) {
+    public static ColType parse(String typeName) {
         return valueMap.get(typeName);
     }
-
-
 }

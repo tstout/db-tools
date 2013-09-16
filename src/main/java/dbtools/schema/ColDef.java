@@ -26,7 +26,7 @@ public class ColDef {
         private String name;
 
         public Builder withType(String type) {
-            this.type = Enum.valueOf(ColType.class, type.toUpperCase());
+            this.type = ColType.parse(type);
             return this;
         }
 

@@ -8,7 +8,6 @@ import java.util.List;
 import static com.google.common.collect.Lists.*;
 
 class SchemaListener extends DBSchemaBaseListener {
-    private static final List<ColDef> EMPTY_COLS = newArrayList();
 
     private List<TableDef> tables = newArrayList();
     private List<ColDef> columns = newArrayList();
