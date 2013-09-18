@@ -1,0 +1,7 @@
+//
+// Test column attribute parsing...
+//
+table table_y (
+    id int pk
+)
+

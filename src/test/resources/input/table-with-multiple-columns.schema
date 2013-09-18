@@ -1,0 +1,9 @@
+/*
+ *  Test Multiple columns...
+ */
+table table_x (
+    idCol int
+    ,charCol char
+    ,charCol2 char
+    ,intCol2 int
+ )

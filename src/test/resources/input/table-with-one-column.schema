@@ -1,1 +1,4 @@
-table table_name ( idCol int )
+//
+// Test single column...
+//
+table table_x ( idCol int )

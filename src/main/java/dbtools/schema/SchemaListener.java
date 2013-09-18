@@ -2,6 +2,7 @@ package dbtools.schema;
 
 import dbtools.DBSchemaBaseListener;
 import dbtools.DBSchemaParser;
+import org.antlr.v4.runtime.tree.ErrorNode;
 
 import java.util.List;
 
@@ -12,6 +13,15 @@ class SchemaListener extends DBSchemaBaseListener {
     private List<TableDef> tables = newArrayList();
     private List<ColDef> columns = newArrayList();
     private TableDef.Builder tableBuilder;
+    private List<ColAttribute> colAttributes = newArrayList();
+
+    @Override public void visitErrorNode(ErrorNode node) {
+        super.visitErrorNode(node);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    //    @Override public void exitColAttribute(DBSchemaParser.ColAttributeContext ctx) {
+//        colAttributes.add(
+//    }
 
     @Override
     public void enterTabledef(DBSchemaParser.TabledefContext ctx) {
@@ -21,7 +31,13 @@ class SchemaListener extends DBSchemaBaseListener {
 
     @Override
     public void exitColDef(DBSchemaParser.ColDefContext ctx) {
-        columns.add(ColDef.builder()
+        ColDef.Builder builder = ColDef.builder();
+
+        for (DBSchemaParser.ColAttributeContext attribCtx : ctx.colAttribute()) {
+            builder.addAttribute(attribCtx.getText());
+        }
+
+        columns.add(builder
                 .withName(ctx.colName().getText())
                 .withType(ctx.colType().getText())
                 .build());

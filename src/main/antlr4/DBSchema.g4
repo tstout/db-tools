@@ -8,12 +8,15 @@ tabledef:
     ;
 
 colType : 'int' | 'char' | 'bit'
-        ;
+    ;
+
+colAttribute : 'pk' | 'autoinc'
+    ;
 
 colName : NAME
         ;
           
-colDef : colName colType
+colDef : colName colType (colAttribute)*
        ;          
 
 tablename:
@@ -61,13 +64,3 @@ DECIMAL_TYPE:
     'decimal'
     ;
 
-//
-// Misc. keywords
-//
-FK:
-    'fk'
-    ;
-
-PK:
-    'pk'
-    ;

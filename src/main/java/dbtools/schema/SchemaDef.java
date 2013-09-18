@@ -2,7 +2,9 @@ package dbtools.schema;
 
 import java.util.List;
 
-import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.FluentIterable.*;
+import static com.google.common.collect.ImmutableList.*;
+import static dbtools.schema.Schemas.*;
 
 public class SchemaDef {
     private final List<TableDef> tables;
@@ -11,7 +13,17 @@ public class SchemaDef {
         this.tables = copyOf(tables);
     }
 
-    List<TableDef> tables() {
+    public TableDef table(String name) {
+        return from(tables)
+                .firstMatch(tableNameIs(name))
+                .or(TableDef.EMPTY);
+    }
+
+    public int numTables() {
+        return tables.size();
+    }
+
+    public List<TableDef> tables() {
         return tables;
     }
 }
