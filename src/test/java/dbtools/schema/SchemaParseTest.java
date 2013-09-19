@@ -16,8 +16,8 @@ public class SchemaParseTest {
         new SchemaParser().printTree(EMPTY_TABLE.input());
 
         assertThat(def.tables().size(), not(0));
-        assertThat(def.tables().get(0).name(), is("table_name"));
-        assertThat(def.tables().get(0).columns().size(), is(0));
+        assertThat(def.table("table_empty").name(), is("table_empty"));
+        assertThat(def.colsFor("table_empty").size(), is(0));
     }
 
     @Test
@@ -35,7 +35,7 @@ public class SchemaParseTest {
         new SchemaParser().printTree(MULTI_COL_TABLE.input());
 
         assertThat(def.numTables(), not(0));
-        assertThat(def.table("table_x").numCols(), is(4));
+        assertThat(def.colsFor("table_x").size(), is(4));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class SchemaParseTest {
         assertThat(def.numTables(), is(1));
 
         List<ColAttribute> colAttributes =
-            def.table("table_y").col("id").get().attributes();
+            def.table("table_y").col("id").attributes();
 
         assertThat(colAttributes.size(), not(0));
         assertThat(colAttributes.get(0), is(ColAttribute.PK));

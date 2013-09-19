@@ -19,6 +19,11 @@ public class SchemaDef {
                 .or(TableDef.EMPTY);
     }
 
+    public List<ColDef> colsFor(String tableName) {
+        return table(tableName).columns();
+    }
+
+
     public int numTables() {
         return tables.size();
     }

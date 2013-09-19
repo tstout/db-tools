@@ -1,5 +1,5 @@
 //
 // Test input for empty table...
 //
-table table_name ()
+table table_empty ()
 

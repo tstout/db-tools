@@ -1,7 +1,5 @@
 package dbtools.schema;
 
-import com.google.common.base.Optional;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +20,11 @@ public class TableDef {
         return copyOf(columns);
     }
 
-    public Optional<ColDef> col(String name) {
+    //public Optional<ColDef> col(String name)
+    public ColDef col(String name) {
         return from(columns)
-                .firstMatch(colNameIs(name));
+                .firstMatch(colNameIs(name))
+                .get();
     }
 
     public int numCols() {
@@ -37,7 +37,8 @@ public class TableDef {
 
     private TableDef(String name, List<ColDef> columns) {
         this.name = name;
-        this.columns = copyOf(fromNullable(columns).or(new ArrayList<ColDef>()));
+        this.columns = copyOf(fromNullable(columns)
+                .or(new ArrayList<ColDef>()));
     }
 
     public static Builder builder() {
