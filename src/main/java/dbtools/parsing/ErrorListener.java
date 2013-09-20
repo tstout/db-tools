@@ -12,7 +12,7 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class SyntaxErrorListener extends BaseErrorListener {
+public class ErrorListener extends BaseErrorListener {
     private List<String> errors = newArrayList();
 
     @Override

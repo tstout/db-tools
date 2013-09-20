@@ -13,15 +13,10 @@ class SchemaListener extends DBSchemaBaseListener {
     private List<TableDef> tables = newArrayList();
     private List<ColDef> columns = newArrayList();
     private TableDef.Builder tableBuilder;
-    private List<ColAttribute> colAttributes = newArrayList();
 
     @Override public void visitErrorNode(ErrorNode node) {
         super.visitErrorNode(node);    //To change body of overridden methods use File | Settings | File Templates.
     }
-
-    //    @Override public void exitColAttribute(DBSchemaParser.ColAttributeContext ctx) {
-//        colAttributes.add(
-//    }
 
     @Override
     public void enterTabledef(DBSchemaParser.TabledefContext ctx) {

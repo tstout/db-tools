@@ -1,4 +1,4 @@
 //
 // Test single column...
 //
-table table_x ( idCol int )
+table table_x ( idCol bool )

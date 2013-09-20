@@ -7,7 +7,7 @@ tabledef:
     'table' tablename '(' colDef? (',' colDef)* ')'
     ;
 
-colType : 'int' | 'char' | 'bit'
+colType : 'int' | 'char' | 'bool'
     ;
 
 colAttribute : 'pk' | 'autoinc'

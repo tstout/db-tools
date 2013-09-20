@@ -3,7 +3,7 @@ package dbtools.schema;
 import com.google.common.base.Optional;
 import dbtools.DBSchemaLexer;
 import dbtools.DBSchemaParser;
-import dbtools.parsing.SyntaxErrorListener;
+import dbtools.parsing.ErrorListener;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -29,7 +29,7 @@ public class SchemaParserBuilder {
 
         DBSchemaParser parser = new DBSchemaParser(tokenStream());
         parser.removeErrorListeners();
-        parser.addErrorListener(listener.or(new SyntaxErrorListener()));
+        parser.addErrorListener(listener.or(new ErrorListener()));
 
         return parser;
     }

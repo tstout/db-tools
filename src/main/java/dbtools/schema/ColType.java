@@ -6,7 +6,7 @@ public enum ColType {
     INT("int"),
     CHAR("char"),
     DECIMAL("decimal"),
-    BOOL("bit");
+    BOOL("bool");
 
     private String typeName;
 

@@ -10,7 +10,7 @@ command:
     ;
 
 //
-//
+// Is explicit WSPACE necessary here?
 //
 option:
     WSPACE* HYPHEN HYPHEN? name (WSPACE+ value)?

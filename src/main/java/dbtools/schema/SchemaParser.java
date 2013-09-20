@@ -1,13 +1,13 @@
 package dbtools.schema;
 
 import dbtools.DBSchemaParser;
-import dbtools.parsing.SyntaxErrorListener;
+import dbtools.parsing.ErrorListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class SchemaParser {
     private ParseTreeWalker walker = new ParseTreeWalker();
     private SchemaListener listener = new SchemaListener();
-    private SyntaxErrorListener errListener = new SyntaxErrorListener();
+    private ErrorListener errListener = new ErrorListener();
 
     public SchemaDef parse(String schema) {
         walker.walk(listener, createParser(schema).schemadef());
