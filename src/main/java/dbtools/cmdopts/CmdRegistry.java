@@ -9,6 +9,9 @@ import static com.google.common.base.Throwables.*;
 import static com.google.common.collect.Maps.*;
 import static java.lang.String.*;
 
+/**
+ *
+ */
 public class CmdRegistry {
     private Map<String, MethodPair> commandMethods = newHashMap();
 
@@ -40,21 +43,22 @@ public class CmdRegistry {
         try {
             cmdHandler.method.invoke(cmdHandler.instance, cmd);
         } catch (Exception e) {
-            throw propagate(e);
+            throw propagate(getRootCause(e));
         }
     }
 
     private void invalidCmd(Cmd cmd) {
-        throw new RuntimeException(format("Unrecognized option %s", cmd.name()));
+        throw new IllegalArgumentException(format("Unrecognized option %s", cmd.name()));
     }
 
     private MethodPair defaultMethod() {
         try {
+            final Object thiz = this;
             final Method m = getClass().getDeclaredMethod("invalidCmd", new Class[]{Cmd.class});
             m.setAccessible(true);
 
             return new MethodPair() {{
-                instance = this;
+                instance = thiz;
                 method = m;
             }};
 

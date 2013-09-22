@@ -1,15 +1,20 @@
 package dbtools.cmdopts;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Set;
 
 import static com.google.common.collect.Sets.*;
 import static dbtools.cmdopts.CmdRegistryTest.InvokedMethods.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 public class CmdRegistryTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     ToolOptionParser parser = new ToolOptionParser();
     Set<InvokedMethods> invokedHandlers = newHashSet();
 
@@ -21,18 +26,31 @@ public class CmdRegistryTest {
     @Test
     public void foo() {
         new CmdRegistry(this)
-                .processCommand(parser.parse("cmd1 --opt1"));
+                .processCommand(parser.parse("cmd1 --opt1 -opt2"));
 
-        assertThat(invokedHandlers.contains(CMD_ONE), is(true));
+        new CmdRegistry(this)
+                .processCommand(parser.parse("cmd2 --opt1 -opt2"));
+
+        assertThat(invokedHandlers.contains(CMD_TWO), is(true));
+    }
+
+    @Test
+    public void invalidCmd() {
+        thrown.expect(IllegalArgumentException.class);
+
+        new CmdRegistry(this)
+                .processCommand(parser.parse("unknown-option"));
     }
 
     @Command("cmd1")
     void cmdHandler1(Cmd cmd) {
         invokedHandlers.add(CMD_ONE);
+        assertThat(cmd.options().size(), is(2));
     }
 
     @Command("cmd2")
     void cmdHandler2(Cmd cmd) {
         invokedHandlers.add(CMD_TWO);
+        assertThat(cmd.options().size(), is(2));
     }
 }
