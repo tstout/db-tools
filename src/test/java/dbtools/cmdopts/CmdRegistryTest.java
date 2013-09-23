@@ -32,6 +32,7 @@ public class CmdRegistryTest {
                 .processCommand(parser.parse("cmd2 --opt1 -opt2"));
 
         assertThat(invokedHandlers.contains(CMD_TWO), is(true));
+        assertThat(invokedHandlers.contains(CMD_ONE), is(true));
     }
 
     @Test
