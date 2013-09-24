@@ -3,5 +3,8 @@
  / _` | '_ \___|  _/ _ \/ _ \ (_-<
  \__,_|_.__/    \__\___/\___/_/__/
 
+The following commands are available:
 
---help Show all commands
+help -- Show all commands
+
+...Not much here yet...
