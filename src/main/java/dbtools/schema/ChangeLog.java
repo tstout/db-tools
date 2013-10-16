@@ -44,7 +44,7 @@ public interface ChangeLog {
         }
 
         @Override public int hashCode() {
-            return Objects.hashCode(minor, major, point, name);
+            return Objects.hashCode(minor, major, point, name, descr);
         }
 
         @Override public boolean equals(Object o) {
