@@ -21,22 +21,25 @@ public class CmdRegistry {
     }
 
     public CmdRegistry(Object... handlers) {
+        // TODO -  get rid of nested for loop...
 
         for (final Object handler : handlers) {
             for (final Method m : handler.getClass().getDeclaredMethods()) {
                 Command cmd = m.getAnnotation(Command.class);
 
                 if (cmd != null) {
-                    commandMethods.put(cmd.value(), new MethodPair() {{
+                    for (String cmdName : cmd.value()) {
+                        commandMethods.put(cmdName, new MethodPair() {{
                             instance = handler;
                             method = m;
                         }});
+                    }
                 }
             }
         }
     }
 
-    public void processCommand(Cmd cmd) {
+    public void process(Cmd cmd) {
         MethodPair cmdHandler = Functions.forMap(commandMethods, defaultMethod())
                 .apply(cmd.name());
 

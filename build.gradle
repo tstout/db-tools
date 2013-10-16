@@ -11,17 +11,22 @@ configurations {
     antlr4
 }
 
-ext {
-    GUAVA_VERSION = '14.0.1'
-}
-
+ext.libraries = [
+        runtime_core: [
+                //'com.google.inject:guice:4.0-beta',
+                'com.google.guava:guava:14.0.1'
+        ],
+        test_core: [
+                'org.mockito:mockito-core:1.9.0',
+                'junit:junit:4.10'
+        ]
+]
 
 dependencies {
     antlr4 'org.antlr:antlr4:4.0'
     compile ('org.antlr:antlr4-runtime:4.0',
-            'junit:junit:4.10',
-            "com.google.guava:guava:$GUAVA_VERSION")
-    testCompile ('org.mockito:mockito-all:1.9.5')
+            libraries.runtime_core)
+    testCompile (libraries.test_core)
 }
 
 task generateGrammarSources(type: JavaExec) {

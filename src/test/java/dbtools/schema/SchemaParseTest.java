@@ -40,8 +40,8 @@ public class SchemaParseTest {
 
     @Test
     public void parseColAttributes() {
-        SchemaDef def = new SchemaParser().parse(PK_COL_TABLE.input());
-        new SchemaParser().printTree(PK_COL_TABLE.input());
+        SchemaDef def = new SchemaParser().parse(COL_ATTR_TABLE.input());
+        new SchemaParser().printTree(COL_ATTR_TABLE.input());
 
         assertThat(def.numTables(), is(1));
 
@@ -50,6 +50,20 @@ public class SchemaParseTest {
 
         assertThat(colAttributes.size(), not(0));
         assertThat(colAttributes.get(0), is(ColAttribute.PK));
+
+        colAttributes = def.table("table_y").col("employee_name").attributes();
+        assertThat(colAttributes.size(), not(0));
+        assertThat(colAttributes.get(0), is(ColAttribute.NULLABLE));
     }
 
+    @Test
+    public void parseVersion() {
+        SchemaDef def = new SchemaParser().parse(VERSION_INFO.input());
+        new SchemaParser().printTree(VERSION_INFO.input());
+
+        assertThat(def.changeLog().majorVersion(), is(1));
+        assertThat(def.changeLog().minorVersion(), is(2));
+        assertThat(def.changeLog().pointVersion(), is(3));
+        assertThat(def.changeLog().descr(), is("'Generic Description'"));
+    }
 }

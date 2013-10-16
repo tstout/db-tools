@@ -26,7 +26,7 @@ class CmdOptListener extends CmdOptionsBaseListener {
             cmdBuilder.addOpt(
                     CmdOpt.builder()
                             .withName(optContext.name().getText())
-                            .withValue(fromNullable(value.isPresent() ? value.get().getText() : null))
+                            .withValue(value.isPresent() ? value.get().getText() : null)
                             .build());
         }
 

@@ -26,10 +26,10 @@ public class CmdRegistryTest {
     @Test
     public void foo() {
         new CmdRegistry(this)
-                .processCommand(parser.parse("cmd1 --opt1 -opt2"));
+                .process(parser.parse("cmd1 --opt1 -opt2"));
 
         new CmdRegistry(this)
-                .processCommand(parser.parse("cmd2 --opt1 -opt2"));
+                .process(parser.parse("cmd2 --opt1 -opt2"));
 
         assertThat(invokedHandlers.contains(CMD_TWO), is(true));
         assertThat(invokedHandlers.contains(CMD_ONE), is(true));
@@ -40,7 +40,7 @@ public class CmdRegistryTest {
         thrown.expect(IllegalArgumentException.class);
 
         new CmdRegistry(this)
-                .processCommand(parser.parse("unknown-option"));
+                .process(parser.parse("unknown-option"));
     }
 
     @Command("cmd1")

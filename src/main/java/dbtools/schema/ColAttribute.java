@@ -4,7 +4,8 @@ import com.google.common.collect.ImmutableBiMap;
 
 public enum ColAttribute {
     PK("pk"),
-    AUTOINC("autoinc");
+    AUTOINC("autoinc"),
+    NULLABLE("nullable");
 
     private String attributeName;
 
@@ -12,6 +13,7 @@ public enum ColAttribute {
             new ImmutableBiMap.Builder<String, ColAttribute>()
                     .put(PK.attributeName, PK)
                     .put(AUTOINC.attributeName, AUTOINC)
+                    .put(NULLABLE.attributeName, NULLABLE)
                     .build();
 
     ColAttribute(String attributeName) {

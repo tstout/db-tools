@@ -3,8 +3,13 @@
  / _` | '_ \___|  _/ _ \/ _ \ (_-<
  \__,_|_.__/    \__\___/\___/_/__/
 
+Commands are of the form:
+command --opt2 arg1val --opt2 opt2arg ...
+
 The following commands are available:
 
-help -- Show all commands
+Show all commands
+help
 
-...Not much here yet...
+Run a schema definition against a database
+apply --schema <schemaName> --schemaFile <.schema file>

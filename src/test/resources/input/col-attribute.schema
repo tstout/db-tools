@@ -3,5 +3,6 @@
 //
 table table_y (
     id int pk
+    ,employee_name varchar nullable
 )
 

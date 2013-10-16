@@ -8,9 +8,15 @@ import static dbtools.schema.Schemas.*;
 
 public class SchemaDef {
     private final List<TableDef> tables;
+    private final ChangeLog changeLog;
 
-    public SchemaDef(List<TableDef> tables) {
+    public ChangeLog changeLog() {
+        return changeLog;
+    }
+
+    public SchemaDef(List<TableDef> tables, ChangeLog changeLog) {
         this.tables = copyOf(tables);
+        this.changeLog = changeLog;
     }
 
     public TableDef table(String name) {
@@ -23,7 +29,6 @@ public class SchemaDef {
         return table(tableName).columns();
     }
 
-
     public int numTables() {
         return tables.size();
     }
@@ -31,4 +36,6 @@ public class SchemaDef {
     public List<TableDef> tables() {
         return tables;
     }
+
+
 }

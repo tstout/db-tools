@@ -1,16 +1,45 @@
 grammar DBSchema;
 
 schemadef:
-    tabledef*;   // more to follow...
+    modVersion* |
+    tabledef*
+    ;
+
+modVersion:
+    'version' '(' versionElement+ ')'
+    ;
+
+versionElement:
+    'version:' versionName |
+    'descr:' descrText |
+    'minor:' minorVersion |
+    'major:' majorVersion |
+    'point:' pointVersion
+    ;
+
+minorVersion : INT
+    ;
+
+majorVersion : INT
+    ;
+
+pointVersion : INT
+    ;
+
+versionName : NAME
+    ;
+
+descrText : STRING_LITERAL
+    ;
 
 tabledef:
     'table' tablename '(' colDef? (',' colDef)* ')'
     ;
 
-colType : 'int' | 'char' | 'bool'
+colType : 'int' | 'varchar' | 'bool'
     ;
 
-colAttribute : 'pk' | 'autoinc'
+colAttribute : 'pk' | 'autoinc' | 'nullable'
     ;
 
 colName : NAME
@@ -32,6 +61,8 @@ LINE_COMMENT:
 
 fragment
 COLNAME : NAME;
+
+STRING_LITERAL: '\''(.)*?'\'';
 
 NAME:
     ('a'..'z' | 'A'..'Z' | '0'..'9' | '_')+

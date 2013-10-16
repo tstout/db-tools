@@ -6,7 +6,8 @@ public enum TestInput {
     EMPTY_TABLE("/input/empty-table.schema"),
     SINGLE_COL_TABLE("/input/table-with-one-column.schema"),
     MULTI_COL_TABLE("/input/table-with-multiple-columns.schema"),
-    PK_COL_TABLE("/input/col-attribute.schema");
+    COL_ATTR_TABLE("/input/col-attribute.schema"),
+    VERSION_INFO("/input/version-info.schema");
 
     private final String input;
 

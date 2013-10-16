@@ -2,11 +2,13 @@ package dbtools.cmdopts;
 
 import com.google.common.base.Optional;
 
+import static com.google.common.base.Optional.fromNullable;
+
 public class CmdOpt {
     private final String name;
-    private final Optional<String> value;
+    private final String value;
 
-    private CmdOpt(String name, Optional<String> value) {
+    private CmdOpt(String name, String value) {
         this.name = name;
         this.value = value;
     }
@@ -20,19 +22,19 @@ public class CmdOpt {
     }
 
     public Optional<String> value() {
-        return value;
+        return fromNullable(value);
     }
 
     public static class CmdOptBuilder {
         private String optName;
-        private Optional<String> value = Optional.absent();
+        private String value;
 
         public CmdOptBuilder withName(String optName) {
             this.optName = optName;
             return this;
         }
 
-        public CmdOptBuilder withValue(Optional<String> value) {
+        public CmdOptBuilder withValue(String value) {
             this.value = value;
             return this;
         }

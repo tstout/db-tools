@@ -13,9 +13,10 @@ class SchemaListener extends DBSchemaBaseListener {
     private List<TableDef> tables = newArrayList();
     private List<ColDef> columns = newArrayList();
     private TableDef.Builder tableBuilder;
+    private VersionBuilder versionBuilder = new VersionBuilder();
 
     @Override public void visitErrorNode(ErrorNode node) {
-        super.visitErrorNode(node);    //To change body of overridden methods use File | Settings | File Templates.
+        super.visitErrorNode(node);
     }
 
     @Override
@@ -38,6 +39,26 @@ class SchemaListener extends DBSchemaBaseListener {
                 .build());
     }
 
+    @Override public void enterMajorVersion(DBSchemaParser.MajorVersionContext ctx) {
+        versionBuilder.majorVersion = Integer.parseInt(ctx.getText());
+    }
+
+    @Override public void enterMinorVersion(DBSchemaParser.MinorVersionContext ctx) {
+        versionBuilder.minorVersion = Integer.parseInt(ctx.getText());
+    }
+
+    @Override public void enterPointVersion(DBSchemaParser.PointVersionContext ctx) {
+        versionBuilder.pointVersion = Integer.parseInt(ctx.getText());
+    }
+
+    @Override public void enterVersionName(DBSchemaParser.VersionNameContext ctx) {
+        versionBuilder.versionName = ctx.getText();
+    }
+
+    @Override public void enterDescrText(DBSchemaParser.DescrTextContext ctx) {
+        versionBuilder.versionDescr = ctx.getText();
+    }
+
     @Override
     public void exitTabledef(DBSchemaParser.TabledefContext ctx) {
         tableBuilder.withColumns(columns);
@@ -46,7 +67,7 @@ class SchemaListener extends DBSchemaBaseListener {
     }
 
     public SchemaDef schema() {
-        return new SchemaDef(tables);
+        return new SchemaDef(tables, versionBuilder.build());
     }
 
 }

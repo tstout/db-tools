@@ -1,0 +1,13 @@
+// Basic version parser test input. Note that commas are not needed to separate the
+// version components.
+// version ( major: 1 minor: 2 point: 3 ) is valid in addition to each component
+// being on a separate line.
+//
+  version (
+    major: 1
+    minor: 2
+    point: 3
+    descr: 'Generic Description'
+  )
+
+
