@@ -1,8 +1,7 @@
 grammar DBSchema;
 
 schemadef:
-    modVersion* |
-    tabledef*
+   modVersion? tabledef*
     ;
 
 modVersion:
