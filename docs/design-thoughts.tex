@@ -1,0 +1,75 @@
+%
+%  -- db-tools design rationale --
+%
+% To convert to markdown:
+% pandoc -f latex -t markdown readme.tex
+%
+\documentclass[10pt]{article}
+\usepackage{url}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{moreverb}           % contains verbatimtab
+\usepackage{textcomp}
+\title{db-tools}
+\date{October 2013}
+\begin{document}
+ \maketitle
+
+\section*{Design Thoughts}
+
+I have done some prototyping of low-level DB IO using Empire DB. At
+first I liked it. After some reflection however, I decided it is not a 
+dependency I want to bring along. Some features are nice, but I
+realized that 
+type safe
+queries are not really a major benefit for me. I'm leaning towards raw SQL in
+resource files...dynamic SQL is a strength, not a weakness that should
+not be abstracted away into a static object model.
+Furthermore, SQL is very powerful when used for it's intended purpose: querying
+data. I don't want to limit the expressiveness of a query to an OO
+wraper. I think SQL breaks down when you try to use it to do complex,
+procedural logic. It is great at maniuplating sets of data. Use it for
+this only, and it becomes a powerful tool, as intended. 
+\\
+\\
+Many schema versioning tools exist. ActiveRecord migrations and
+liquibase come to mind.
+%
+% More here on why I don't just simply use one of those.
+%
+
+\section*{Major Components}
+\begin{itemize}
+  \item ANTLR Grammar defining the custom DDL language
+  \item Symbol table and other related objects to process the metadata
+   harvested from the generated ANTLR parser.
+   \item Schema Mutator - apply changes to a DB schema
+ \item Code generation from parsed metadata (more on this later)
+ 
+ \end{itemize}
+
+\section*{Minor Components}
+\begin {itemize}
+\item WIP
+\end{itemize}
+
+\section*{Code Generation or Runtime Interpreter?}
+A primary motivator for creating an external DSL is the desire to have
+access to the DB metadata without requiring a database instance to be
+actually running. I'm familiar with the typical technique of
+generating source code and have a build step to generate the desired
+functionality. In the past I have thought that requiring an additional
+step in the build process to invoke a custom compiler tool was a
+burden. With tools like gradle and rake, I'm not so sure now.
+
+\subsection*{Implementation options}
+\begin{itemize}
+  \item Clojures genclass (and maybe protocols for monkey-patching)
+\end{itemize}
+
+   
+
+
+
+%Created by \LaTeX\
+\end{document}

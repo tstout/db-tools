@@ -14,6 +14,7 @@ public interface ChangeLog {
         minor = 0;
         point = 0;
         name = "nil";
+        descr = "nil";
     }};
 
     public static class DefaultChangeLog implements ChangeLog {

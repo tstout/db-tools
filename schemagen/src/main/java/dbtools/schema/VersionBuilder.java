@@ -1,8 +1,11 @@
 package dbtools.schema;
 
 class VersionBuilder {
-    int minorVersion, majorVersion, pointVersion;
-    String versionDescr, versionName;
+    int minorVersion;
+    int majorVersion;
+    int pointVersion;
+    String versionDescr;
+    String versionName;
 
     ChangeLog build() {
         return new ChangeLog.DefaultChangeLog() {{

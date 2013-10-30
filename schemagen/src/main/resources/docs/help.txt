@@ -11,5 +11,5 @@ The following commands are available:
 Show all commands
 help
 
-Run a schema definition against a database
+Run a schema modification against a database
 apply --schema <schemaName> --schemaFile <.schema file>

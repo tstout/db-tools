@@ -21,8 +21,10 @@ public class CmdRegistry {
     }
 
     public CmdRegistry(Object... handlers) {
-        // TODO -  get rid of nested for loop...
-
+        //
+        // Maybe a FluentIterable.transformAndConcat() here instead? I'm not sure
+        // guava would make this nested loop clearer...
+        //
         for (final Object handler : handlers) {
             for (final Method m : handler.getClass().getDeclaredMethods()) {
                 Command cmd = m.getAnnotation(Command.class);
