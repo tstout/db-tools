@@ -7,6 +7,9 @@ public class DBUrl implements Property<String> {
         this.val = val;
     }
 
+    //
+    // TODO - is a builder justified here for the url components?
+    //
     @Override public String value() {
         return val;
     }
