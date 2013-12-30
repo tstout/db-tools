@@ -1,1 +1,1 @@
-include "schemagen"
+include 'schemagen', 'db-io'
