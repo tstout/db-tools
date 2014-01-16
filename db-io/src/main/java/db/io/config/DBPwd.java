@@ -2,10 +2,11 @@ package db.io.config;
 
 import java.util.Objects;
 
-public class DBUrl implements Property<String> {
-    private final String val;
+// Anemic for the moment...
+public class DBPwd implements Property<String> {
+    private String val;
 
-    public DBUrl(String val) {
+    public DBPwd(String val) {
         this.val = val;
     }
 
@@ -14,7 +15,7 @@ public class DBUrl implements Property<String> {
     }
 
     @Override public int hashCode() {
-        return Objects.hash(val);
+        return Objects.hashCode(val);
     }
 
     @Override public boolean equals(Object obj) {

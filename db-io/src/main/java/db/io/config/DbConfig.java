@@ -2,18 +2,20 @@ package db.io.config;
 
 import com.google.common.collect.ImmutableClassToInstanceMap;
 
+import static com.google.common.base.Preconditions.*;
+
 public abstract class DbConfig {
-    private final ImmutableClassToInstanceMap<Property> config;
+    private ImmutableClassToInstanceMap<Property> config;
+    private boolean configured = false;
+    protected final DBContext context = new DBContext();
 
-    public DbConfig() {
-        DBContext props = new DBContext();
-        config(props);
-        config = props.build();
-    }
-
-    public <T extends Property> Property<T> get(Class<T> type) {
+    public <T extends Property> T get(Class<T> type) {
+        checkState(configured, "DbConfig not yet configured.");
         return config.getInstance(type);
     }
 
-    abstract protected void config(DBContext context);
+    protected void configured() {
+        config = context.build();
+        configured = true;
+    }
 }
