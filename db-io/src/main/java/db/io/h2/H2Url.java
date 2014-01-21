@@ -1,9 +1,8 @@
 package db.io.h2;
 
 import db.io.config.DBUrl;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import static java.lang.String.format;
+import static java.lang.String.*;
 
 public class H2Url extends DBUrl {
     private static final String FMT = "jdbc:h2:%s:%s";
@@ -17,6 +16,6 @@ public class H2Url extends DBUrl {
     }
 
     public static H2Url serverDB() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }

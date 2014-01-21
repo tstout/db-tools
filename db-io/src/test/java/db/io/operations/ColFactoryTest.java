@@ -1,6 +1,8 @@
 package db.io.operations;
 
+import db.io.UnitTests;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -15,6 +17,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
+@Category(UnitTests.class)
 public class ColFactoryTest {
     @Mock ResultSet rs;
 

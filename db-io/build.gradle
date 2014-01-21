@@ -1,3 +1,5 @@
+import org.h2.tools.Server
+
 apply plugin: 'java'
 apply plugin: 'liquibase'
 //apply from: 'database.gradle'
@@ -21,6 +23,13 @@ dependencies {
     testCompile(project.libraries.test_core)
 }
 
+test {
+    useJUnit {
+        includeCategories 'db.io.UnitTests'
+    }
+}
+
+
 
 liquibase {
     changelogs {
@@ -38,6 +47,30 @@ liquibase {
     }
 
     defaultDatabase = databases.sandbox
+}
+
+task startH2 << {
+    println 'starting h2....'
+    def server = Server.createTcpServer((String[])[])
+    server.start()
+    println "H2: ${server.status}"
+}
+
+task integrationTest(dependsOn: startH2, type: Test) {
+    useJUnit {
+        includeCategories 'db.io.IntegrationTests'
+        excludeCategories 'db.io.UnitTests'
+    }
+}
+
+task stopH2 {
+    mustRunAfter 'integrationTest'
+    doLast {
+        println 'Stopping H2...'
+        def server = Server.createTcpServer((String[])[])
+        server.stop()
+        println "stopped H2 Server"
+    }
 }
 
 //task wrapper(type: Wrapper) {

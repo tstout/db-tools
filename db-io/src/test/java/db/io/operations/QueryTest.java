@@ -2,9 +2,11 @@ package db.io.operations;
 
 import db.io.Database;
 import db.io.SqlStmt;
+import db.io.UnitTests;
 import db.io.config.DBCredentials;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -22,6 +24,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
+@Category(UnitTests.class)
 public class QueryTest {
     // TODO - a little heavy on the mocking here...short of loading up an in-memory DB, what else can be done?
     @Mock PreparedStatement stmt;
@@ -32,7 +35,7 @@ public class QueryTest {
     @Mock ResultSetMetaData rsMeta;
 
     @Before
-    public void setup() throws Exception {
+    public void set_up() throws Exception {
         when(conn.prepareStatement(any(String.class))).thenReturn(stmt);
         when(db.connection(any(DBCredentials.class))).thenReturn(conn);
         when(stmt.executeQuery()).thenReturn(rs);
@@ -48,10 +51,11 @@ public class QueryTest {
     }
 
     @Test
-    public void readSingleRowTest() throws SQLException {
+    public void read_a_single_row() throws SQLException {
         Query query = new DefaultQuery(db, creds);
         SqlStmt stmt = SqlStmt.Default;
         DataSet result = query.execute(stmt, "arbitrary sql...", SqlStmt.NO_ARGS);
+
         assertThat(result.numRows(), is(1));
         assertThat(result.get(0, "descr").val(String.class), is("description val"));
         assertThat(result.get(0, "id").val(Integer.class), is(1));
