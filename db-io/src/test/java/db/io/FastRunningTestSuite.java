@@ -3,6 +3,7 @@ package db.io;
 import db.io.operations.ColFactoryTest;
 import db.io.operations.DataSetTest;
 import db.io.operations.QueryTest;
+import db.io.operations.ValueFactoryTest;
 import org.junit.experimental.categories.Categories;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -15,7 +16,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses( {
         ColFactoryTest.class,
         DataSetTest.class,
-        QueryTest.class
+        QueryTest.class,
+        ValueFactoryTest.class
 })
 public class FastRunningTestSuite {
 }

@@ -14,7 +14,9 @@ project.ext {
             ],
             test_core: [
                     'org.mockito:mockito-core:1.9.0',
-                    'junit:junit:4.10'
+                    'junit:junit:4.11',
+                    'com.carrotsearch:junit-benchmarks:0.7.2'
+
             ]
     ]
 }

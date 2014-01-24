@@ -3,8 +3,11 @@ package db.io.operations;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
+import java.util.Set;
+
 /**
- * Ultimate result of DB queries??
+ * Ultimate result of DB queries?? Ultimately this should probably be extracted
+ * to an interface.
  */
 public class DataSet {
     private Table<Integer, String, Column> table = HashBasedTable.create();
@@ -21,6 +24,11 @@ public class DataSet {
     public int numRows() {
         return table.rowMap().size();
     }
+
+    public Set<String> columnNames() {
+        return table.columnKeySet();
+    }
+
 
     // TODO - might be useful to expose some of Guava's table operations here...
 }
