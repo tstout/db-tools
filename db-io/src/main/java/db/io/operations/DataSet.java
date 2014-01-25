@@ -3,6 +3,8 @@ package db.io.operations;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -10,6 +12,11 @@ import java.util.Set;
  * to an interface.
  */
 public class DataSet {
+
+    public interface Action {
+        void exec(Collection<Column> row);
+    }
+
     private Table<Integer, String, Column> table = HashBasedTable.create();
 
     public Column get(int row, String colName) {
@@ -29,6 +36,9 @@ public class DataSet {
         return table.columnKeySet();
     }
 
-
-    // TODO - might be useful to expose some of Guava's table operations here...
+    public void each(Action action) {
+        for (Map<String, Column> rowMap : table.rowMap().values()) {
+            action.exec(rowMap.values());
+        }
+    }
 }

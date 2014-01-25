@@ -1,35 +1,44 @@
 package db.io.operations;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.base.CaseFormat.*;
 import static com.google.common.base.Throwables.*;
 import static com.google.common.collect.FluentIterable.*;
+import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Maps.*;
 import static com.google.common.collect.Sets.*;
 import static com.google.common.reflect.Reflection.*;
 
 class ValueFactory<T> {
     private final Class<T> interfaceType;
-    private final Handler handler;
-    private final SetView<String> methodNames;
+    private final Set<String> methodNames;
 
     ValueFactory(Class<T> interfaceType, DataSet dataSet) {
         this.interfaceType = interfaceType;
         this.methodNames = methodNames(dataSet, interfaceType);
-        this.handler = new Handler(interfaceType, dataSet, methodNames);
     }
 
-    // TODO -  this is the wrong API, rethink this...
+    Collection<T> create(final DataSet dataSet) {
+        final List<T> rows = newArrayList();
 
-    T newRow(int row, DataSet dataSet) {
-        return newProxy(interfaceType, new Handler(interfaceType, dataSet, methodNames));
+        dataSet.each(new DataSet.Action() {
+            public void exec(Collection<Column> row) {
+                rows.add(newProxy(interfaceType,
+                        new Handler(interfaceType, row, methodNames)));
+            }
+        });
+
+        return rows;
     }
 
     private SetView<String> methodNames(DataSet dataSet, Class<?> interfaceType) {
@@ -73,6 +82,29 @@ class ValueFactory<T> {
                 }
             };
         }
+
+        static Predicate<Column> methodNameMatches(final Method method) {
+            return new Predicate<Column>() {
+                public boolean apply(Column input) {
+                    return input.name()
+                            .toLowerCase()
+                            .equals(dbColToMethod()
+                                    .apply(method.getName()));
+                }
+            };
+        }
+
+        static Function<String, Method> intfToMethods(final Class<?> type) {
+            return new Function<String, Method>() {
+                public Method apply(String input) {
+                    try {
+                        return type.getMethod(input);
+                    } catch (NoSuchMethodException e) {
+                        throw propagate(e);
+                    }
+                }
+            };
+        }
     }
 
     static class Handler implements InvocationHandler {
@@ -81,15 +113,10 @@ class ValueFactory<T> {
 
         // TODO - memoize the method name intersection by interfaceType
 
-        Handler(Class<?> interfaceType, DataSet dataSet, Set<String> methodNames) {
-
-            for (String mName : methodNames) {
-                try {
-                    Column col = dataSet.get(0, mToCol.apply(mName));
-                    values.put(interfaceType.getMethod(mName), col.val(col.type()));
-                } catch (NoSuchMethodException e) {
-                    throw propagate(e);
-                }
+        Handler(Class<?> interfaceType, Collection<Column> row, Set<String> methodNames) {
+            for (Method m : from(methodNames).transform(Fn.intfToMethods(interfaceType))) {
+                Column col = from(row).firstMatch(Fn.methodNameMatches(m)).get();
+                values.put(m, col.val(col.type()));
             }
         }
 

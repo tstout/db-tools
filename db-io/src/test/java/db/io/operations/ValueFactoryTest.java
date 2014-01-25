@@ -7,6 +7,10 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.TestRule;
 
+import java.util.Collection;
+
+import static com.google.common.collect.FluentIterable.from;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
 
@@ -27,9 +31,10 @@ public class ValueFactoryTest {
         ValueFactory<SomeData> factory = new ValueFactory(SomeData.class, ds);
 
 
-        SomeData data = factory.newRow(0, ds);
+        Collection<SomeData> data = factory.create(ds);
 
-        assertThat(data.count(), is(25));
+        assertThat(data.size(), not(0));
+        assertThat(from(data).first().get().count(), is(25));
 
     }
 }
