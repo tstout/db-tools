@@ -1,12 +1,15 @@
 package db.io.config;
 
+import db.io.UnitTests;
 import db.io.h2.H2Url;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-import static org.hamcrest.core.IsNull.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.*;
-import static org.junit.matchers.JUnitMatchers.*;
 
+@Category(UnitTests.class)
 public class ConfigPropertiesTest {
     @Test
     public void basicConfigPropTest() {

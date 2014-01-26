@@ -21,9 +21,9 @@ public class Column {
         return type;
     }
 
-    public Column copy(Object value) {
-        return new Column(type, name, value);
-    }
+//    public Column copy(Object value) {
+//        return new Column(type, name, value);
+//    }
 
     public <T> T val(Class<T> type) {
         return type.cast(value);

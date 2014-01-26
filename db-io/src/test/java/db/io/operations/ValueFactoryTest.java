@@ -9,8 +9,7 @@ import org.junit.rules.TestRule;
 
 import java.util.Collection;
 
-import static com.google.common.collect.FluentIterable.from;
-import static org.hamcrest.CoreMatchers.not;
+import static com.google.common.collect.FluentIterable.*;
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
 
@@ -21,20 +20,26 @@ public class ValueFactoryTest {
 
     interface SomeData {
         int count();
+        String descr();
     }
 
     @Test
-    public void verify_int_value() {
+    public void verify_basic_proxy_value() {
         DataSet ds = new DataSet();
-        ds.put(0, new Column(Integer.class, "count", 25));
+        Column intCol = new Column(Integer.class, "count", 25);
+        Column strCol = new Column(String.class, "descr", "test-val");
 
-        ValueFactory<SomeData> factory = new ValueFactory(SomeData.class, ds);
+        ds.put(0, intCol);
+        ds.put(0, strCol);
+        ds.put(1, intCol);
+        ds.put(1, strCol);
 
+        ValueFactory factory = new ValueFactory(SomeData.class, ds);
+        Collection<SomeData> data = factory.create(SomeData.class, ds);
 
-        Collection<SomeData> data = factory.create(ds);
-
-        assertThat(data.size(), not(0));
+        assertThat(data.size(), is(2));
         assertThat(from(data).first().get().count(), is(25));
+        assertThat(from(data).first().get().descr(), is("test-val"));
 
     }
 }

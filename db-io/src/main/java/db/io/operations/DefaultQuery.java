@@ -15,7 +15,7 @@ class DefaultQuery implements Query {
     private final Database db;
     private final DBCredentials creds;
 
-    public DefaultQuery(Database db, DBCredentials creds) {
+    DefaultQuery(Database db, DBCredentials creds) {
         this.db = db;
         this.creds = creds;
     }
@@ -24,7 +24,7 @@ class DefaultQuery implements Query {
         try (
                 Connection conn = db.connection(creds);
                 PreparedStatement statement = stmt.prepare(conn, sql, args);
-                ResultSet rs = statement.executeQuery();
+                ResultSet rs = statement.executeQuery()
         ) {
             return processResultSet(rs);
         } catch (SQLException e) {

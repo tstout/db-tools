@@ -19,22 +19,22 @@ import static com.google.common.collect.Maps.*;
 import static com.google.common.collect.Sets.*;
 import static com.google.common.reflect.Reflection.*;
 
-class ValueFactory<T> {
-    private final Class<T> interfaceType;
+class ValueFactory {
+    private final Class<?> interfaceType;
     private final Set<String> methodNames;
 
-    ValueFactory(Class<T> interfaceType, DataSet dataSet) {
+    ValueFactory(Class<?> interfaceType, DataSet dataSet) {
         this.interfaceType = interfaceType;
         this.methodNames = methodNames(dataSet, interfaceType);
     }
 
-    Collection<T> create(final DataSet dataSet) {
+    <T> Collection<T> create(final Class<T> intf, final DataSet dataSet) {
         final List<T> rows = newArrayList();
 
         dataSet.each(new DataSet.Action() {
             public void exec(Collection<Column> row) {
-                rows.add(newProxy(interfaceType,
-                        new Handler(interfaceType, row, methodNames)));
+                rows.add(intf.cast(newProxy(interfaceType,
+                        new Handler(interfaceType, row, methodNames))));
             }
         });
 
@@ -75,14 +75,6 @@ class ValueFactory<T> {
             };
         }
 
-        static Function<String, String> mToCol() {
-            return new Function<String, String>() {
-                public String apply(String input) {
-                    return LOWER_CAMEL.to(LOWER_UNDERSCORE, input.toLowerCase());
-                }
-            };
-        }
-
         static Predicate<Column> methodNameMatches(final Method method) {
             return new Predicate<Column>() {
                 public boolean apply(Column input) {
@@ -109,13 +101,14 @@ class ValueFactory<T> {
 
     static class Handler implements InvocationHandler {
         private Map<Method, Object> values = newHashMap();
-        private final static Function<String, String> mToCol = Fn.mToCol();
-
-        // TODO - memoize the method name intersection by interfaceType
 
         Handler(Class<?> interfaceType, Collection<Column> row, Set<String> methodNames) {
-            for (Method m : from(methodNames).transform(Fn.intfToMethods(interfaceType))) {
-                Column col = from(row).firstMatch(Fn.methodNameMatches(m)).get();
+            for (Method m : from(methodNames)
+                    .transform(Fn.intfToMethods(interfaceType))) {
+
+                Column col = from(row)
+                        .firstMatch(Fn.methodNameMatches(m)).get();
+
                 values.put(m, col.val(col.type()));
             }
         }
