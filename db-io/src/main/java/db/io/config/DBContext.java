@@ -3,7 +3,7 @@ package db.io.config;
 import com.google.common.collect.ImmutableClassToInstanceMap;
 
 public class DBContext {
-    ImmutableClassToInstanceMap.Builder<Property> builder =
+    private ImmutableClassToInstanceMap.Builder<Property> builder =
             new ImmutableClassToInstanceMap.Builder<>();
 
     public DBContext add(Class clazz, Property property) {

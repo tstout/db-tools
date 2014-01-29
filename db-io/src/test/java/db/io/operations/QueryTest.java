@@ -1,7 +1,6 @@
 package db.io.operations;
 
 import db.io.Database;
-import db.io.SqlStmt;
 import db.io.UnitTests;
 import db.io.config.DBCredentials;
 import org.junit.Before;
@@ -52,9 +51,9 @@ public class QueryTest {
 
     @Test
     public void read_a_single_row() throws SQLException {
-        Query query = new DefaultQuery(db, creds);
-        SqlStmt stmt = SqlStmt.Default;
-        DataSet result = query.execute(stmt, "arbitrary sql...", SqlStmt.NO_ARGS);
+        Query query = new QueryRunner(db, creds);
+
+        DataSet result = query.execute("arbitrary sql...", SqlStmt.NO_ARGS);
 
         assertThat(result.numRows(), is(1));
         assertThat(result.get(0, "descr").val(String.class), is("description val"));
@@ -63,4 +62,19 @@ public class QueryTest {
         verify(conn).close();
         verify(rs).close();
     }
+
+    @Test
+    public void read_a_single_row_with_builder() {
+        DataSet result = new QueryBuilder()
+                .withDb(db)
+                .withCreds(creds)
+                .build()
+                .execute("arbitrary sql...");
+
+        assertThat(result.numRows(), is(1));
+        assertThat(result.get(0, "descr").val(String.class), is("description val"));
+        assertThat(result.get(0, "id").val(Integer.class), is(1));
+    }
+
+
 }

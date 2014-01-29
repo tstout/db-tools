@@ -1,4 +1,4 @@
-package db.io;
+package db.io.operations;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import static com.google.common.base.Throwables.*;
 
-public interface SqlStmt {
+interface SqlStmt {
     PreparedStatement prepare(Connection conn, String sql, Object... args);
 
     static final Object[] NO_ARGS = new Object[]{};

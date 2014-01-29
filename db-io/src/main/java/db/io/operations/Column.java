@@ -2,22 +2,22 @@ package db.io.operations;
 
 import com.google.common.base.Objects;
 
-public class Column {
+class Column {
     private final Class<?> type;
     private final String name;
     private final Object value; // Nullable<T> ?
 
-    public Column(Class<?> type, String name, Object value) {
+    Column(Class<?> type, String name, Object value) {
         this.type = type;
         this.name = name;
         this.value = value;
     }
 
-    public String name() {
+    String name() {
         return name;
     }
 
-    public Class<?> type() {
+    Class<?> type() {
         return type;
     }
 
@@ -25,7 +25,7 @@ public class Column {
 //        return new Column(type, name, value);
 //    }
 
-    public <T> T val(Class<T> type) {
+    <T> T val(Class<T> type) {
         return type.cast(value);
     }
 

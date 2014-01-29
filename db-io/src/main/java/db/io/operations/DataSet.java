@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Ultimate result of DB queries?? Ultimately this should probably be extracted
+ * Ultimate result of DB queries?? This should probably be extracted
  * to an interface. Not sure if having this public is beneficial.
  */
-public class DataSet {
+class DataSet {
 
     public interface Action {
         void exec(Collection<Column> row);

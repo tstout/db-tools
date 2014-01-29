@@ -1,7 +1,6 @@
 package db.io.operations;
 
 import db.io.Database;
-import db.io.SqlStmt;
 import db.io.config.DBCredentials;
 
 import java.sql.Connection;
@@ -11,19 +10,20 @@ import java.sql.SQLException;
 
 import static com.google.common.base.Throwables.*;
 
-class DefaultQuery implements Query {
+class QueryRunner implements Query {
     private final Database db;
     private final DBCredentials creds;
+    private final SqlStmt stmtFactory = SqlStmt.Default;
 
-    DefaultQuery(Database db, DBCredentials creds) {
+    QueryRunner(Database db, DBCredentials creds) {
         this.db = db;
         this.creds = creds;
     }
 
-    @Override public DataSet execute(SqlStmt stmt, String sql, Object... args) {
+    @Override public DataSet execute(String sql, Object... args) {
         try (
                 Connection conn = db.connection(creds);
-                PreparedStatement statement = stmt.prepare(conn, sql, args);
+                PreparedStatement statement = stmtFactory.prepare(conn, sql, args);
                 ResultSet rs = statement.executeQuery()
         ) {
             return processResultSet(rs);
