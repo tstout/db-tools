@@ -1,8 +1,8 @@
 package db.io.operations;
 
-public interface Query {
-    DataSet execute(String sql, Object... args);
+import java.util.Collection;
 
-    //<T> Collection<T> run(Class<T> clazz);
+public interface Query {
+    <T> Collection<T> execute(Class<T> intf, String sql, Object... args);
 }
 

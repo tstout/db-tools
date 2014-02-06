@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Throwables.*;
@@ -21,13 +22,15 @@ class QueryRunner implements Query {
         this.creds = checkNotNull(creds);
     }
 
-    @Override public DataSet execute(String sql, Object... args) {
+    @Override public <T> Collection<T> execute(Class<T> intf, String sql, Object... args) {
         try (
                 Connection conn = db.connection(creds);
                 PreparedStatement statement = stmtFactory.prepare(conn, sql, args);
                 ResultSet rs = statement.executeQuery()
         ) {
-            return processResultSet(rs);
+            DataSet ds = processResultSet(rs);
+            return new ValueFactory(intf, ds).create(intf, ds);
+
         } catch (SQLException e) {
             throw propagate(e);
         }

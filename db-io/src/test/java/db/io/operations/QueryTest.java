@@ -16,7 +16,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Collection;
 
+import static com.google.common.collect.FluentIterable.from;
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -49,15 +51,21 @@ public class QueryTest {
         when(rsMeta.getColumnType(2)).thenReturn(Types.NVARCHAR);
     }
 
+    interface SomeData {
+        String descr();
+        int id();
+    }
+
+
     @Test
     public void read_a_single_row() throws SQLException {
         Query query = new QueryRunner(db, creds);
 
-        DataSet result = query.execute("arbitrary sql...", SqlStmt.NO_ARGS);
+        Collection<SomeData> result = query.execute(SomeData.class, "arbitrary sql...");
+        assertThat(result.size(), is(1));
 
-        assertThat(result.numRows(), is(1));
-        assertThat(result.get(0, "descr").val(String.class), is("description val"));
-        assertThat(result.get(0, "id").val(Integer.class), is(1));
+        assertThat(from(result).first().get().descr(), is("description val"));
+        assertThat(from(result).first().get().id(), is(1));
 
         verify(conn).close();
         verify(rs).close();
@@ -65,14 +73,14 @@ public class QueryTest {
 
     @Test
     public void read_a_single_row_with_builder() {
-        DataSet result = new QueryBuilder()
+        Collection<SomeData> result = new QueryBuilder()
                 .withDb(db)
                 .withCreds(creds)
                 .build()
-                .execute("arbitrary sql...");
+                .execute(SomeData.class, "arbitrary sql...");
 
-        assertThat(result.numRows(), is(1));
-        assertThat(result.get(0, "descr").val(String.class), is("description val"));
-        assertThat(result.get(0, "id").val(Integer.class), is(1));
+        assertThat(result.size(), is(1));
+        assertThat(from(result).first().get().descr(), is("description val"));
+        assertThat(from(result).first().get().id(), is(1));
     }
 }

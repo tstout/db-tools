@@ -15,6 +15,10 @@ public class H2IntTest {
 
     Database db = new H2Db();
 
+    interface SomeData {
+
+    }
+
     @Test
     public void basic_select() {
     Query q = new QueryBuilder()
@@ -22,7 +26,7 @@ public class H2IntTest {
             .withDb(new H2Db())
             .build();
 
-        q.execute("select * from db_io.logs");
+        q.execute(SomeData.class, "select * from db_io.logs");
         //
         assertThat(true, is(true));
     }
