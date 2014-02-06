@@ -29,49 +29,48 @@ test {
     }
 }
 
-
-
 liquibase {
     changelogs {
         main {
-            file = file('changelog.groovy')
+            file = file('src/test/java/db/io/test-changelog.groovy')
         }
     }
 
     databases {
-        sandbox {
-            url = 'jdbc:h2:tcp://127.0.0.1/~/.splumb/db/splumb'
+        dbio_test {
+            url = 'jdbc:h2:tcp://127.0.0.1/~/.dbio/dbio-test'
             username = 'sa'
             password = ''
         }
     }
 
-    defaultDatabase = databases.sandbox
+    defaultDatabase = databases.dbio_test
 }
 
 task startH2 << {
-    println 'starting h2....'
-    def server = Server.createTcpServer((String[])[])
-    server.start()
-    println "H2: ${server.status}"
+        println 'starting h2....'
+        def server = Server.createTcpServer((String[])[])
+        server.start()
+        println "H2: ${server.status}"
 }
 
-task integrationTest(dependsOn: startH2, type: Test) {
+//task integrationTest(dependsOn: startH2, type: Test) {
+task integrationTest(type: Test) {
     useJUnit {
         includeCategories 'db.io.IntegrationTests'
         excludeCategories 'db.io.UnitTests'
     }
 }
 
-task stopH2 {
-    mustRunAfter 'integrationTest'
-    doLast {
-        println 'Stopping H2...'
-        def server = Server.createTcpServer((String[])[])
-        server.stop()
-        println "stopped H2 Server"
-    }
-}
+//task stopH2 {
+//    mustRunAfter 'integrationTest'
+//    doLast {
+//        println 'Stopping H2...'
+//        def server = Server.createTcpServer((String[])[])
+//        server.stop()
+//        println "stopped H2 Server"
+//    }
+//}
 
 //task wrapper(type: Wrapper) {
 //    gradleVersion = '1.2'

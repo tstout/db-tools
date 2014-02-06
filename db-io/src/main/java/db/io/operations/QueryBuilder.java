@@ -10,18 +10,18 @@ public class QueryBuilder {
     private DBCredentials dbCreds;
 
     public QueryBuilder withCreds(DBCredentials dbCreds) {
-        checkNotNull(dbCreds);
         this.dbCreds = dbCreds;
         return this;
     }
 
     public QueryBuilder withDb(Database db) {
-        checkNotNull(db);
         this.db = db;
         return this;
     }
 
     public Query build() {
+        checkNotNull(db);
+        checkNotNull(dbCreds);
         return new QueryRunner(db, dbCreds);
     }
 }

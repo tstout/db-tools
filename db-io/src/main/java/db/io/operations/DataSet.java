@@ -9,34 +9,34 @@ import java.util.Set;
 
 /**
  * Ultimate result of DB queries?? This should probably be extracted
- * to an interface. Not sure if having this public is beneficial.
+ * to an interface. Not sure yet if having this public is beneficial.
  */
 class DataSet {
 
-    public interface Action {
+    interface Action {
         void exec(Collection<Column> row);
     }
 
     private Table<Integer, String, Column> table = HashBasedTable.create();
 
-    public Column get(int row, String colName) {
+    Column get(int row, String colName) {
         return table.rowMap().get(row).get(colName);
     }
 
-    public DataSet put(int row, Column col) {
+    DataSet put(int row, Column col) {
         table.put(row, col.name(), col);
         return this;
     }
 
-    public int numRows() {
+    int numRows() {
         return table.rowMap().size();
     }
 
-    public Set<String> columnNames() {
+    Set<String> columnNames() {
         return table.columnKeySet();
     }
 
-    public void each(Action action) {
+    void each(Action action) {
         for (Map<String, Column> rowMap : table.rowMap().values()) {
             action.exec(rowMap.values());
         }

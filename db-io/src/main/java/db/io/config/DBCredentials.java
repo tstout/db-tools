@@ -15,9 +15,9 @@ public interface DBCredentials {
         private final DBUser user;
 
         public Default(DBUrl url, DBPwd pwd, DBUser user) {
-            this.url = null;
-            this.pwd = null;
-            this.user = null;
+            this.url = url;
+            this.pwd = pwd;
+            this.user = user;
         }
 
         @Override

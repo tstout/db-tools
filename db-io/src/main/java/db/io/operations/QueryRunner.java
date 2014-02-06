@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Throwables.*;
 
 class QueryRunner implements Query {
@@ -16,8 +17,8 @@ class QueryRunner implements Query {
     private final SqlStmt stmtFactory = SqlStmt.Default;
 
     QueryRunner(Database db, DBCredentials creds) {
-        this.db = db;
-        this.creds = creds;
+        this.db = checkNotNull(db);
+        this.creds = checkNotNull(creds);
     }
 
     @Override public DataSet execute(String sql, Object... args) {

@@ -75,6 +75,4 @@ public class QueryTest {
         assertThat(result.get(0, "descr").val(String.class), is("description val"));
         assertThat(result.get(0, "id").val(Integer.class), is(1));
     }
-
-
 }

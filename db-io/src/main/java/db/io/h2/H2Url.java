@@ -15,7 +15,8 @@ public class H2Url extends DBUrl {
         return new H2Url(format(FMT, "mem", dbName));
     }
 
-    public static H2Url serverDB() {
-        throw new UnsupportedOperationException();
+    public static H2Url localServerDB(String dbName, String dir) {
+        String partialUrl = format("//127.0.0.1/%s/%s", dir, dbName);
+        return new H2Url(format(FMT, "tcp", partialUrl));
     }
 }
