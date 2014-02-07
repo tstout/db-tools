@@ -2,6 +2,6 @@ package db.io.operations;
 
 import java.sql.ResultSet;
 
-public interface ResultReader {
+interface ResultReader {
     DataSet read(ResultSet rs);
 }
