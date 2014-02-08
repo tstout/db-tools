@@ -1,6 +1,7 @@
 package db.io;
 
 import db.io.config.ConfigPropertiesTest;
+import db.io.operations.ArgSetterTest;
 import db.io.operations.ColFactoryTest;
 import db.io.operations.DataSetTest;
 import db.io.operations.QueryTest;
@@ -16,7 +17,8 @@ import org.junit.runners.Suite;
         DataSetTest.class,
         QueryTest.class,
         ValueFactoryTest.class,
-        ConfigPropertiesTest.class
+        ConfigPropertiesTest.class,
+        ArgSetterTest.class
 })
 public class FastRunningTestSuite {
 }

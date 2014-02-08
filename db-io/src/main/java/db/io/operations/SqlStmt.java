@@ -9,8 +9,6 @@ import static com.google.common.base.Throwables.*;
 interface SqlStmt {
     PreparedStatement prepare(Connection conn, String sql, Object... args);
 
-    static final Object[] NO_ARGS = new Object[]{};
-
     static SqlStmt Default = new SqlStmt() {
         @Override
         public PreparedStatement prepare(Connection conn, String sql, Object... args) {
