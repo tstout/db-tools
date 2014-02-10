@@ -1,20 +1,30 @@
 package db.io.operations;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableSet;
+
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Map;
 
 import static com.google.common.base.Throwables.*;
+import static com.google.common.collect.FluentIterable.*;
 import static com.google.common.collect.Maps.*;
 
 class ArgSetter {
     private final Map<Class<?>, Setters> setterMap = newHashMap();
 
+    private final ImmutableSet<Class<?>> intfTypes = new ImmutableSet.Builder<Class<?>>()
+            .add(Blob.class)
+            .build();
+
     ArgSetter() {
         for (Setters setter : Setters.values()) {
-            setterMap.put(setter.typeHandled(), setter);
+            setterMap.put(setter.type(), setter);
         }
     }
 
@@ -23,22 +33,66 @@ class ArgSetter {
 
         for (Object arg : args) {
             try {
-                setterMap.get(arg.getClass()).set(index, stmt, args[index++]);
+                Class klazz = from(intfTypes)
+                        .firstMatch(Fn.isSqlIntf(arg.getClass()))
+                        .or(arg.getClass());
+
+                setterMap.get(klazz).set(index, stmt, args[index++]);
             } catch (SQLException e) {
                 throw propagate(e);
             }
         }
     }
 
-    // TODO - need to add support for many more types
+    static class Fn {
+        private Fn() {
+            throw new UnsupportedOperationException();
+        }
+
+        static Predicate<Class<?>> isSqlIntf(final Class<?> argClass) {
+            return new Predicate<Class<?>>() {
+                @Override public boolean apply(Class<?> input) {
+                    return input.isAssignableFrom(argClass);
+                }
+            };
+        }
+    }
+
     enum Setters {
+        TIMESTAMP {
+            @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
+                stmt.setTimestamp(index, (Timestamp) value);
+            }
+
+            @Override Class<?> type() {
+                return Timestamp.class;
+            }
+        },
+        BLOB {
+            @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
+                stmt.setBlob(index, (Blob) value);
+            }
+
+            @Override Class<?> type() {
+                return Blob.class;
+            }
+        },
+        BYTES {
+            @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
+                stmt.setBytes(index, (byte[]) value);
+            }
+
+            @Override Class<?> type() {
+                return byte[].class;
+            }
+        },
         INT {
             @Override
             void set(int index, PreparedStatement stmt, Object value) throws SQLException {
                 stmt.setInt(0, (Integer) value);
             }
 
-            @Override Class<?> typeHandled() {
+            @Override Class<?> type() {
                 return Integer.class;
             }
         },
@@ -48,17 +102,16 @@ class ArgSetter {
                 stmt.setString(index, (String) value);
             }
 
-            @Override Class<?> typeHandled() {
+            @Override Class<?> type() {
                 return String.class;
             }
-
         },
         BOOL {
             @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
                 stmt.setBoolean(index, (Boolean) value);
             }
 
-            @Override Class<?> typeHandled() {
+            @Override Class<?> type() {
                 return Boolean.class;
             }
         },
@@ -67,7 +120,7 @@ class ArgSetter {
                 stmt.setBigDecimal(index, (BigDecimal) value);
             }
 
-            @Override Class<?> typeHandled() {
+            @Override Class<?> type() {
                 return BigDecimal.class;
             }
         },
@@ -76,12 +129,12 @@ class ArgSetter {
                 stmt.setDate(index, (Date) value);
             }
 
-            @Override Class<?> typeHandled() {
+            @Override Class<?> type() {
                 return Date.class;
             }
         };
 
         abstract void set(int index, PreparedStatement stmt, Object value) throws SQLException;
-        abstract Class<?> typeHandled();
+        abstract Class<?> type();
     }
 }
