@@ -29,7 +29,7 @@ class ArgSetter {
     }
 
     void setValues(PreparedStatement stmt, Object[] args) {
-        int index = 0;
+        int index = 1;
 
         for (Object arg : args) {
             try {
@@ -37,7 +37,8 @@ class ArgSetter {
                         .firstMatch(Fn.isSqlIntf(arg.getClass()))
                         .or(arg.getClass());
 
-                setterMap.get(klazz).set(index, stmt, args[index++]);
+                setterMap.get(klazz).set(index, stmt, arg);
+                index++;
             } catch (SQLException e) {
                 throw propagate(e);
             }
@@ -89,7 +90,7 @@ class ArgSetter {
         INT {
             @Override
             void set(int index, PreparedStatement stmt, Object value) throws SQLException {
-                stmt.setInt(0, (Integer) value);
+                stmt.setInt(index, (Integer) value);
             }
 
             @Override Class<?> type() {
