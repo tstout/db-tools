@@ -14,7 +14,7 @@ public class ConfigPropertiesTest {
     @Test
     public void basic_config_prop_test() {
         DbConfig config = new DbConfig() {{
-            context.add(H2Url.class, H2Url.memDB("test_db"));
+            add(H2Url.class, H2Url.memDB("test_db"));
             configured();
         }};
 

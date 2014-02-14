@@ -20,4 +20,47 @@ project.ext {
     ]
 }
 
+def hasGem(gemName) {
+    new File("${rootDir}/gems").list().find { it.startsWith(gemName) } != null
+}
 
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        jruby
+    }
+
+    dependencies {
+        jruby 'org.jruby:jruby-complete:1.7.8'
+    }
+
+    jrubyCommon = {
+        main = 'org.jruby.Main'
+        classpath = sourceSets.test.runtimeClasspath + configurations.jruby
+        environment['GEM_HOME'] = file("${rootDir}")
+        environment['GEM_PATH'] = file("${rootDir}")
+        //
+        // Tell JRuby where to find rb files to satisfy require
+        // See about cleaning up this path statement (maybe an [].each ?)
+        //
+        environment['RUBYOPT'] = "-I${file('lib/ruby').path}:${file('build/generated-src/ruby')}"
+    }
+
+    task gems {
+        description = 'install gems needed for jruby'
+        ['rspec', 'minitest', 'minitest-reporters'].each { gem ->
+            if (!hasGem(gem)) {
+                javaexec {
+                    main = 'org.jruby.Main'
+                    classpath = configurations.jruby
+                    args = ['-S', 'gem', 'install', gem]
+                    environment['GEM_PATH'] = file("${rootDir}")
+                    environment['GEM_HOME'] = file("${rootDir}")
+                }
+            }
+        }
+    }
+}

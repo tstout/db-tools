@@ -1,6 +1,9 @@
 package db.io.config;
 
-import java.util.Objects;
+
+//import java.util.Objects;
+
+import com.google.common.base.Objects;
 
 public interface DBCredentials {
     DBUrl url();
@@ -36,11 +39,18 @@ public interface DBCredentials {
         }
 
         @Override public int hashCode() {
-            return Objects.hash(url, pwd, user);
+            return Objects.hashCode(url, pwd, user);
         }
 
         @Override public boolean equals(Object obj) {
-            return Objects.equals(this, obj);
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
+
+            final DBCredentials other = (DBCredentials) obj;
+
+            return Objects.equal(this.url, other.url()) &&
+                    Objects.equal(this.pwd, other.pwd()) &&
+                    Objects.equal(this.user, other.user());
         }
     }
 }

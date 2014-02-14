@@ -1,6 +1,6 @@
 package db.io.config;
 
-import java.util.Objects;
+import com.google.common.base.Objects;
 
 // Anemic for the moment...
 public class DBPwd implements Property<String> {
@@ -19,6 +19,10 @@ public class DBPwd implements Property<String> {
     }
 
     @Override public boolean equals(Object obj) {
-        return Objects.equals(this, obj);
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        final DBPwd other = (DBPwd) obj;
+        return Objects.equal(this.val, other.val);
     }
 }

@@ -1,12 +1,15 @@
 package db.io.operations;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import db.io.IntegrationTests;
 import db.io.config.DBCredentials;
 import db.io.h2.H2Db;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.TestRule;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -19,6 +22,8 @@ import static org.junit.Assert.*;
 
 @Category(IntegrationTests.class)
 public class H2IntTest {
+    @Rule
+    public TestRule benchmarkRun = new BenchmarkRule();
 
     DBCredentials creds = h2LocalServerCreds("dbio-test", "~/.dbio");
 
@@ -28,15 +33,6 @@ public class H2IntTest {
             .withCreds(creds)
             .withDb(new H2Db())
             .build();
-
-    interface LogRecord {
-        int id();
-        Timestamp when();
-        String msg();
-        String level();
-        String logger();
-        String thread();
-    }
 
     @Before
     public void setup() {
