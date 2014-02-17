@@ -3,9 +3,18 @@ import org.h2.tools.Server
 apply plugin: 'java'
 apply plugin: 'liquibase'
 //apply from: 'database.gradle'
+apply plugin: 'maven-publish'
 
-repositories {
-    mavenCentral()
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'com.github.tstout'
+            artifactId 'db-io'
+            version '0.0.1'
+
+            from components.java
+        }
+    }
 }
 
 buildscript {

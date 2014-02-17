@@ -1,9 +1,11 @@
+
 //
 // TODO - change this to support gradle wrapper.
 //
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 project.ext {
@@ -37,16 +39,18 @@ subprojects {
         jruby 'org.jruby:jruby-complete:1.7.8'
     }
 
-    jrubyCommon = {
-        main = 'org.jruby.Main'
-        classpath = sourceSets.test.runtimeClasspath + configurations.jruby
-        environment['GEM_HOME'] = file("${rootDir}")
-        environment['GEM_PATH'] = file("${rootDir}")
-        //
-        // Tell JRuby where to find rb files to satisfy require
-        // See about cleaning up this path statement (maybe an [].each ?)
-        //
-        environment['RUBYOPT'] = "-I${file('lib/ruby').path}:${file('build/generated-src/ruby')}"
+    project.ext {
+        jrubyCommon = {
+            main = 'org.jruby.Main'
+            classpath = sourceSets.test.runtimeClasspath + configurations.jruby
+            environment['GEM_HOME'] = file("${rootDir}")
+            environment['GEM_PATH'] = file("${rootDir}")
+            //
+            // Tell JRuby where to find rb files to satisfy require
+            // See about cleaning up this path statement (maybe an [].each ?)
+            //
+            environment['RUBYOPT'] = "-I${file('lib/ruby').path}:${file('build/generated-src/ruby')}"
+        }
     }
 
     task gems {

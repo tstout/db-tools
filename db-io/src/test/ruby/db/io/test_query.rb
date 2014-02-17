@@ -49,6 +49,9 @@ class TestQuery < MiniTest::Test
                  "test.thread")
 
     result = @query.execute(DbIo::LogRecord.java_class, "select * from db_io.logs")
+
+    refute_equal(result.size, 0)
+
     result.each do |record|
       puts "id:#{record.id} when:#{record.when} msg: #{record.msg}"
     end
