@@ -11,6 +11,7 @@ repositories {
 project.ext {
     libraries = [
             runtime_core: [
+                    'org.liquibase:liquibase-core:3.1.1',
                     //'com.google.inject:guice:4.0-beta',
                     'com.google.guava:guava:14.0.1'
             ],

@@ -41,7 +41,8 @@ test {
 liquibase {
     changelogs {
         main {
-            file = file('src/test/java/db/io/test-changelog.groovy')
+//            file = file('src/test/java/db/io/test-changelog.groovy')
+            file = file('src/test/java/db/io/test-changelog.sql')
         }
     }
 

@@ -20,8 +20,6 @@ public class QueryBuilder {
     }
 
     public Query build() {
-        checkNotNull(db);
-        checkNotNull(dbCreds);
-        return new QueryRunner(db, dbCreds);
+        return new QueryRunner(checkNotNull(db), checkNotNull(dbCreds));
     }
 }

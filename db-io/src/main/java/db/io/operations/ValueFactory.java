@@ -19,6 +19,9 @@ import static com.google.common.collect.Maps.*;
 import static com.google.common.collect.Sets.*;
 import static com.google.common.reflect.Reflection.*;
 
+/**
+ *
+ */
 class ValueFactory {
     private final Class<?> interfaceType;
     private final Set<String> methodNames;

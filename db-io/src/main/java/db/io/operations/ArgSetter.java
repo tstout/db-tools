@@ -15,6 +15,12 @@ import static com.google.common.base.Throwables.*;
 import static com.google.common.collect.FluentIterable.*;
 import static com.google.common.collect.Maps.*;
 
+/**
+ * This implements freedom from all the drudgery of setting prepared
+ * statement arguments. Given a prepared statement and an array of args, the appropriate
+ * PreparedStatement setXXX method is invoked.
+ * Note: this does not currently cover all possible JDBC types (just the ones I needed)
+ */
 class ArgSetter {
     private final Map<Class<?>, Setters> setterMap = newHashMap();
 

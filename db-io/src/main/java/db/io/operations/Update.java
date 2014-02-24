@@ -1,5 +1,7 @@
 package db.io.operations;
 
+import java.util.Collection;
+
 public interface Update {
-    int update(String sql, Object... args);
+    Collection<Integer> update();
 }

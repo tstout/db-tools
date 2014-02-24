@@ -29,24 +29,27 @@ public class H2IntTest {
 
     long now = Calendar.getInstance().getTimeInMillis();
 
-    Update u = new UpdateBuilder()
+    UpdateBuilder uBuilder = new UpdateBuilder()
             .withCreds(creds)
-            .withDb(new H2Db())
-            .build();
+            .withDb(new H2Db());
 
     @Before
     public void setup() {
-        u.update("insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
+        uBuilder.addOp("insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
                 new Timestamp(now),
                 "test msg",
                 "DEBUG",
                 "test.logger",
-                "test.thread");
+                "test.thread")
+                .build()
+                .update();
     }
 
     @After
     public void tearDown() {
-        u.update("delete from db_io.logs");
+        uBuilder.addOp("delete from db_io.logs")
+                .build()
+                .update();
     }
 
     @Test

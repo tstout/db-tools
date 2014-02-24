@@ -14,7 +14,9 @@ import static java.sql.Types.*;
 class ColFactory {
     //
     // type mapping: http://db.apache.org/ojb/docu/guides/jdbc-types.html
-    // TODO -
+    // TODO - change this to use an enum to house the functions instead of
+    // anon classes.
+    //
     private static ImmutableMap<Integer, Class<?>> COL_MAP =
             new ImmutableMap.Builder<Integer, Class<?>>()
                     //.put(ARRAY, Column< Arrays.>)

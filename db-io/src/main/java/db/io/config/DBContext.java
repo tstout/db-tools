@@ -2,7 +2,7 @@ package db.io.config;
 
 import com.google.common.collect.ImmutableClassToInstanceMap;
 
-public class DBContext {
+class DBContext {
     private ImmutableClassToInstanceMap.Builder<Property> builder =
             new ImmutableClassToInstanceMap.Builder<>();
 

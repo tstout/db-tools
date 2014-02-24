@@ -31,6 +31,9 @@ databaseChangeLog {
 //    "NVARCHAR"
 //
 
+    // Take a look at the sql version of this...I think I prefer it over this. The sql version
+    // is a little less verbose.
+    //
     changeSet(id: 'create-schema', author: 'tstout') {
         sql(stripComments: true, splitStatements: false, endDelimiter: ';') {
             "create schema if not exists db_io"

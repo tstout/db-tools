@@ -56,7 +56,6 @@ public class QueryTest {
         int id();
     }
 
-
     @Test
     public void read_a_single_row() throws SQLException {
         Query query = new QueryRunner(db, creds);
@@ -77,7 +76,7 @@ public class QueryTest {
                 .withDb(db)
                 .withCreds(creds)
                 .build()
-                .execute(SomeData.class, "arbitrary sql...");
+                .execute(SomeData.class, "sql returning columns matching methods in SomeData...");
 
         assertThat(result.size(), is(1));
         assertThat(from(result).first().get().descr(), is("description val"));

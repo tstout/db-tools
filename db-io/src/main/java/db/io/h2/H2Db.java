@@ -23,7 +23,10 @@ public class H2Db implements Database {
         }
     };
 
-    private final LoadingCache<DBCredentials, JdbcConnectionPool> cache = CacheBuilder.newBuilder().build(loader);
+    private final LoadingCache<DBCredentials, JdbcConnectionPool> cache =
+            CacheBuilder
+                    .newBuilder()
+                    .build(loader);
 
     @Override public Connection connection(DBCredentials creds) {
         try {
