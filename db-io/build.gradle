@@ -2,24 +2,67 @@ import org.h2.tools.Server
 
 apply plugin: 'java'
 apply plugin: 'liquibase'
-//apply from: 'database.gradle'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId 'com.github.tstout'
-            artifactId 'db-io'
-            version '0.0.1'
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
 
-            from components.java
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
 
-            artifact sourceJar {
-                classifier "source"
+group = 'com.github.tstout'
+version = '0.0.1'
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+                name 'do.io'
+                packaging 'jar'
+                description 'db.io simplifies basic JDBC usage'
+                url 'https://github.com/tstout/db-tools'
+
+                scm {
+                    url 'scm:git@github.com:tstout/db-tools.git'
+                    connection 'scm:git@github.com:tstout/db-tools.git'
+                    developerConnection 'scm:git@github.com:tstout/db-tools.git'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT'
+                        url 'http://opensource.org/licenses/MIT'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'todd.tstout@gmail.com'
+                        name 'Todd Stout'
+                    }
+                }
             }
         }
     }
