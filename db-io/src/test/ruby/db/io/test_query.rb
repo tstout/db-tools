@@ -16,10 +16,9 @@ class TestQuery < MiniTest::Test
     @creds = DbIo::H2Credentials.h2_local_server_creds("dbio-test", "~/.dbio")
     @db = DbIo::H2Db.new
 
-    @update = DbIo::UpdateBuilder.new
+    @update_builder = DbIo::UpdateBuilder.new
       .with_creds(@creds)
       .with_db(@db)
-      .build
 
     @query = DbIo::QueryBuilder.new
       .with_creds(@creds)
@@ -28,7 +27,9 @@ class TestQuery < MiniTest::Test
   end
 
   def teardown
-    @update.update('delete from db_io.logs')
+    @update_builder.add_op('delete from db_io.logs')
+      .build()
+      .update()
   end
 
   # Currently, the java proxy-related code for querying only supports interfaces.
@@ -41,12 +42,15 @@ class TestQuery < MiniTest::Test
   # interface, only implement one.
 
   def test_basic_read_write_from_ruby
-    @update.update('insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)',
+    @update_builder
+      .add_op('insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)',
                 Timestamp.new(@now),
                  "test msg",
                  "DEBUG",
                  "test.logger",
                  "test.thread")
+      .build()
+      .update()
 
     result = @query.execute(DbIo::LogRecord.java_class, 'select * from db_io.logs')
 

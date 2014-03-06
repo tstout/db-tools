@@ -4,6 +4,7 @@ apply plugin: 'java'
 apply plugin: 'liquibase'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'maven-publish'
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
@@ -26,6 +27,22 @@ version = '0.0.1'
 
 signing {
     sign configurations.archives
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'com.github.tstout'
+            artifactId 'db-io'
+            version '0.0.1'
+
+            from components.java
+
+            artifact sourcesJar {
+                classifier "source"
+            }
+        }
+    }
 }
 
 uploadArchives {
