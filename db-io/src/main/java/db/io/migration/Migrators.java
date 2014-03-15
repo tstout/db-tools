@@ -29,11 +29,16 @@ public final class Migrators {
                             .getInstance()
                             .findCorrectDatabaseImplementation(new JdbcConnection(dbConn));
 
-                    Liquibase liquibase = new Liquibase(script,
-                            new ClassLoaderResourceAccessor(),
-                            database);
+                    new Liquibase(script,
+                            new ClassLoaderResourceAccessor(), database)
+                            .update(script);
 
-                    liquibase.changeLogSync(script);
+                    if (!dbConn.getAutoCommit()) {
+                        dbConn.rollback();
+                    }
+
+                    dbConn.close();
+
                 } catch (Exception e) {
                     throw propagate(e);
                 }

@@ -1,9 +1,11 @@
 package db.io.operations;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+import db.io.Database;
 import db.io.IntegrationTests;
 import db.io.config.DBCredentials;
 import db.io.h2.H2Db;
+import db.io.migration.Migrators;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,16 +27,20 @@ public class H2IntTest {
     @Rule
     public TestRule benchmarkRun = new BenchmarkRule();
 
-    DBCredentials creds = h2LocalServerCreds("dbio-test", "~/.dbio");
+    DBCredentials creds = h2MemCreds("dbio-test");
+    Database db = new H2Db();
 
     long now = Calendar.getInstance().getTimeInMillis();
 
     UpdateBuilder uBuilder = new UpdateBuilder()
             .withCreds(creds)
-            .withDb(new H2Db());
+            .withDb(db);
 
     @Before
     public void setup() {
+
+        Migrators.liquibase().update("db/io/migration/test-changelog.sql", db.connection(creds));
+
         uBuilder.addOp("insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
                 new Timestamp(now),
                 "test msg",

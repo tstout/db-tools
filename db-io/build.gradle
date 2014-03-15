@@ -96,7 +96,7 @@ buildscript {
 }
 
 dependencies {
-    compile(project.libraries.runtime_core, 'com.h2database:h2:1.3.167')
+    compile(project.libraries.runtime_core, 'com.h2database:h2:1.3.175')
     testCompile(project.libraries.test_core)
 }
 

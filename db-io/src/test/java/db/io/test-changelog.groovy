@@ -32,7 +32,7 @@ databaseChangeLog {
 //
 
     // Take a look at the sql version of this...I think I prefer it over this. The sql version
-    // is a little less verbose.
+    // is much less verbose.
     //
     changeSet(id: 'create-schema', author: 'tstout') {
         sql(stripComments: true, splitStatements: false, endDelimiter: ';') {

@@ -40,6 +40,8 @@ class QueryRunner implements Query {
         //
         // TODO - need to memoize the QueryMeta, probably need a query name here to id the query
         //
-        return new QueryMeta(rs).newReader().read(rs);
+        return new QueryMeta(rs)
+                .newReader()
+                .read(rs);
     }
 }

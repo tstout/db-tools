@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.*;
-import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.ImmutableList.*;
 import static com.google.common.collect.Lists.*;
 
 public class UpdateBuilder {

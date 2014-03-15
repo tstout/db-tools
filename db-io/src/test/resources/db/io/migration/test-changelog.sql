@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 --changeset tstout:create schema
-create schema if not exists db_io;
+create schema if not exists DB_IO;
 --rollback drop schema db_io;
 
 create table db_io.logs (
