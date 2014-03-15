@@ -8,13 +8,17 @@ java_import 'java.util.Calendar'
 module DbIo
   include_package 'db.io.operations'
   include_package 'db.io.h2'
+  include_package 'db.io.migration'
 end
 
 class TestQuery < MiniTest::Test
   def setup
     @now = Calendar.getInstance.getTimeInMillis
-    @creds = DbIo::H2Credentials.h2_local_server_creds("dbio-test", "~/.dbio")
+    @creds = DbIo::H2Credentials.h2_mem_creds('dbio-test')
     @db = DbIo::H2Db.new
+    @conn = @db.connection(@creds)
+
+    DbIo::Migrators.liquibase.update('db/io/migration/test-changelog.sql', @conn)
 
     @update_builder = DbIo::UpdateBuilder.new
       .with_creds(@creds)
@@ -26,11 +30,11 @@ class TestQuery < MiniTest::Test
       .build
   end
 
-  def teardown
-    @update_builder.add_op('delete from db_io.logs')
-      .build()
-      .update()
-  end
+  #def teardown
+  #  @update_builder.add_op('delete from db_io.logs')
+  #    .build()
+  #    .update()
+  #end
 
   # Currently, the java proxy-related code for querying only supports interfaces.
   # Ideally, we should be able to declare a record in Ruby as in the following:
@@ -45,10 +49,10 @@ class TestQuery < MiniTest::Test
     @update_builder
       .add_op('insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)',
                 Timestamp.new(@now),
-                 "test msg",
-                 "DEBUG",
-                 "test.logger",
-                 "test.thread")
+                 'test msg',
+                 'DEBUG',
+                 'test.logger',
+                 'test.thread')
       .build()
       .update()
 
@@ -62,8 +66,7 @@ class TestQuery < MiniTest::Test
   end
 
   def test_basic_assertions
-
-    x = %i(a b c)
+    x = [:a, :b, :c]
     assert_instance_of(Array, x)
     assert_equal(x[0], :a)
     assert_equal(x[1], :b)
