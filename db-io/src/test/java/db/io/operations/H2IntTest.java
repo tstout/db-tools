@@ -38,8 +38,8 @@ public class H2IntTest {
 
     @Before
     public void setup() {
-
-        Migrators.liquibase().update("db/io/migration/test-changelog.sql", db.connection(creds));
+        Migrators.liquibase(db, creds)
+                .update("db/io/migration/test-changelog.sql");
 
         uBuilder.addOp("insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
                 new Timestamp(now),
