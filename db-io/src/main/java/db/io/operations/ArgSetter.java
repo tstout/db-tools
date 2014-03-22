@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Throwables.*;
 import static com.google.common.collect.FluentIterable.*;
 import static com.google.common.collect.Maps.*;
@@ -43,12 +44,18 @@ class ArgSetter {
                         .firstMatch(Fn.isSqlIntf(arg.getClass()))
                         .or(arg.getClass());
 
-                setterMap.get(klazz).set(index, stmt, arg);
+                lookup(klazz).set(index, stmt, arg);
                 index++;
             } catch (SQLException e) {
                 throw propagate(e);
             }
         }
+    }
+
+    private Setters lookup(Class klazz) {
+        return checkNotNull(setterMap.get(klazz),
+                "No JDBC setter available for class %s",
+                klazz.getCanonicalName());
     }
 
     static class Fn {
@@ -138,6 +145,17 @@ class ArgSetter {
 
             @Override Class<?> type() {
                 return Date.class;
+            }
+        },
+        UTIL_DATE {
+            @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
+                DATE.set(index,
+                        stmt,
+                        new java.sql.Date(((java.util.Date)value).getTime()));
+            }
+
+            @Override Class<?> type() {
+                return java.util.Date.class;
             }
         };
 
