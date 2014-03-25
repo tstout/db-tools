@@ -18,6 +18,8 @@ public class DBUrl implements Property<String> {
     }
 
     @Override public boolean equals(Object obj) {
-        return Objects.equals(this, obj);
+        return obj != null &&
+                getClass() == obj.getClass() &&
+                Objects.equals(this, obj);
     }
 }

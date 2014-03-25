@@ -18,7 +18,9 @@ class TestQuery < MiniTest::Test
     @db = DbIo::H2Db.new
     @conn = @db.connection(@creds)
 
-    DbIo::Migrators.liquibase.update('db/io/migration/test-changelog.sql', @conn)
+    DbIo::Migrators
+      .liquibase(@db, @creds)
+      .update('db/io/migration/test-changelog.sql')
 
     @update_builder = DbIo::UpdateBuilder.new
       .with_creds(@creds)
@@ -30,12 +32,6 @@ class TestQuery < MiniTest::Test
       .build
   end
 
-  #def teardown
-  #  @update_builder.add_op('delete from db_io.logs')
-  #    .build()
-  #    .update()
-  #end
-
   # Currently, the java proxy-related code for querying only supports interfaces.
   # Ideally, we should be able to declare a record in Ruby as in the following:
   #
@@ -45,7 +41,7 @@ class TestQuery < MiniTest::Test
   # be declared in java. I have not yet found a way in Jruby to define a java
   # interface, only implement one.
 
-  def test_basic_read_write_from_ruby
+  def test_basic_read_write
     @update_builder
       .add_op('insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)',
                 Timestamp.new(@now),
@@ -53,25 +49,17 @@ class TestQuery < MiniTest::Test
                  'DEBUG',
                  'test.logger',
                  'test.thread')
-      .build()
-      .update()
+      .build
+      .update
 
     result = @query.execute(DbIo::LogRecord.java_class, 'select * from db_io.logs')
 
     refute_equal(result.size, 0)
-
-    result.each do |record|
-      puts "id:#{record.id} when:#{record.when} msg: #{record.msg}"
-    end
+    assert_equal(result.first.msg, 'test msg')
+    assert_equal(result.first.level, 'DEBUG')
+    assert_equal(result.first.logger, 'test.logger')
+    assert_equal(result.first.thread, 'test.thread')
+    assert_equal(result.first.when, Timestamp.new(@now))
+    assert_instance_of(Fixnum, result.first.id)
   end
-
-  def test_basic_assertions
-    x = [:a, :b, :c]
-    assert_instance_of(Array, x)
-    assert_equal(x[0], :a)
-    assert_equal(x[1], :b)
-    assert_equal(x[2], :c)
-    refute_nil(x)
-  end
-
 end

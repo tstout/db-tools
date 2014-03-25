@@ -5,7 +5,7 @@ import com.google.common.base.Objects;
 class Column {
     private final Class<?> type;
     private final String name;
-    private final Object value; // Nullable<T> ?
+    private final Object value; // Optional<T> ?
 
     Column(Class<?> type, String name, Object value) {
         this.type = type;
@@ -20,10 +20,6 @@ class Column {
     Class<?> type() {
         return type;
     }
-
-//    public Column copy(Object value) {
-//        return new Column(type, name, value);
-//    }
 
     <T> T val(Class<T> type) {
         return type.cast(value);

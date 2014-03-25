@@ -5,6 +5,7 @@ apply plugin: 'liquibase'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'maven-publish'
+apply plugin: 'findbugs'
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'

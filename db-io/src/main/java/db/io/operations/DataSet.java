@@ -28,10 +28,6 @@ class DataSet {
         return this;
     }
 
-    int numRows() {
-        return table.rowMap().size();
-    }
-
     Set<String> columnNames() {
         return table.columnKeySet();
     }

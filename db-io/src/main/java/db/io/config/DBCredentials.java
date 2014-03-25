@@ -1,8 +1,5 @@
 package db.io.config;
 
-
-//import java.util.Objects;
-
 import com.google.common.base.Objects;
 
 public interface DBCredentials {
