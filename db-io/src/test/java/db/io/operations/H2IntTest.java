@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import static com.google.common.collect.FluentIterable.*;
-import static db.io.h2.H2Credentials.*;
+import static db.io.config.Credentials.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -27,7 +27,7 @@ public class H2IntTest {
     @Rule
     public TestRule benchmarkRun = new BenchmarkRule();
 
-    DBCredentials creds = h2MemCreds("dbio-test");
+    DBCredentials creds = h2Mem("dbio-test");
     Database db = new H2Db();
 
     long now = Calendar.getInstance().getTimeInMillis();

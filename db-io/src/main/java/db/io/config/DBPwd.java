@@ -4,6 +4,8 @@ import com.google.common.base.Objects;
 
 // Anemic for the moment...
 public class DBPwd implements Property<String> {
+    public static final DBPwd DEFAULT = new DBPwd("");
+
     private String val;
 
     public DBPwd(String val) {

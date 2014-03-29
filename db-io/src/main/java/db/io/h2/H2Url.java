@@ -12,8 +12,7 @@ public class H2Url extends DBUrl {
     }
 
     public static H2Url memDB(String dbName) {
-        return new H2Url(format(FMT, "mem", dbName)
-                .concat(";DB_CLOSE_DELAY=-1"));
+        return new H2Url(format(FMT, "mem", dbName).concat(";DB_CLOSE_DELAY=-1"));
     }
 
     public static H2Url localServerDB(String dbName, String dir) {

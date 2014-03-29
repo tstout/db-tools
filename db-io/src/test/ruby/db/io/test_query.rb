@@ -9,14 +9,14 @@ module DbIo
   include_package 'db.io.operations'
   include_package 'db.io.h2'
   include_package 'db.io.migration'
+  include_package 'db.io.config'
 end
 
 class TestQuery < MiniTest::Test
   def setup
     @now = Calendar.getInstance.getTimeInMillis
-    @creds = DbIo::H2Credentials.h2_mem_creds('dbio-test')
+    @creds = DbIo::Credentials.h2_mem('dbio-test')
     @db = DbIo::H2Db.new
-    @conn = @db.connection(@creds)
 
     DbIo::Migrators
       .liquibase(@db, @creds)

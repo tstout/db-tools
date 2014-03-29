@@ -14,16 +14,15 @@ import static com.google.common.collect.Lists.*;
 class DefaultResultReader implements ResultReader {
     private final ImmutableList<ReaderPair> readers;
 
-    class ReaderPair {
+    static class ReaderPair {
         Class<?> type;
         String name;
         ColReader<?> reader;
 
         ReaderPair(Class<?> type, String name, ColReader<?> reader) {
-            checkNotNull(reader, "reader should not be null");
+            this.reader = checkNotNull(reader, "reader should not be null");
             this.type = type;
             this.name = name;
-            this.reader = reader;
         }
 
         Object read(ResultSet rs) {
