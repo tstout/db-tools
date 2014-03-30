@@ -5,14 +5,16 @@ apply plugin: 'liquibase'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'maven-publish'
-apply plugin: 'findbugs'
+//apply plugin: 'findbugs'
 
-tasks.withType(FindBugs) {
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
-}
+//tasks.withType(FindBugs) {
+//    reports {
+//        xml.enabled = false
+//        html.enabled = true
+//    }
+//
+//    excludes ['src/test/java/db/io/**/*.java']
+//}
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
@@ -133,13 +135,6 @@ liquibase {
     defaultDatabase = databases.dbio_test
 }
 
-task startH2 << {
-        println 'starting h2....'
-        def server = Server.createTcpServer((String[])[])
-        server.start()
-        println "H2: ${server.status}"
-}
-
 //task integrationTest(dependsOn: startH2, type: Test) {
 task integrationTest(type: Test) {
     useJUnit {
@@ -157,16 +152,6 @@ task(minitest, dependsOn: "classes gems".split(), type: JavaExec) {
     description = 'Run minitest via jruby'
     args = ['--2.0', 'src/test/ruby/db/io/test_query.rb']
 }
-
-//task stopH2 {
-//    mustRunAfter 'integrationTest'
-//    doLast {
-//        println 'Stopping H2...'
-//        def server = Server.createTcpServer((String[])[])
-//        server.stop()
-//        println "stopped H2 Server"
-//    }
-//}
 
 //task wrapper(type: Wrapper) {
 //    gradleVersion = '1.2'

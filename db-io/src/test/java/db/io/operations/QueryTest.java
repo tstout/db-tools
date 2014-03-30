@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Collection;
 
-import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.FluentIterable.*;
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
