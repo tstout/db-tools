@@ -1,7 +1,6 @@
 package db.io.migration;
 
-import db.io.Database;
-import db.io.config.DBCredentials;
+import db.io.config.ConnectionFactory;
 
 public final class Migrators {
 
@@ -9,7 +8,7 @@ public final class Migrators {
         throw new UnsupportedOperationException();
     }
 
-    public static Migrator liquibase(Database db, DBCredentials credentials) {
-        return new LiquibaseMigrator(db, credentials);
+    public static Migrator liquibase(ConnectionFactory connForge) {
+        return new LiquibaseMigrator(connForge);
     }
 }

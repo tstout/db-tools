@@ -15,11 +15,15 @@ end
 class TestQuery < MiniTest::Test
   def setup
     @now = Calendar.getInstance.getTimeInMillis
-    @creds = DbIo::Credentials.h2_mem('dbio-test')
+    @connForge = DbIo::ConnectionFactory.new(
+        DbIo::H2Credentials.h2_mem_creds('dbio-test'),
+        DbIo::H2Db.new)
+
+    @creds = DbIo::H2Credentials.h2_mem_creds('dbio-test')
     @db = DbIo::H2Db.new
 
     DbIo::Migrators
-      .liquibase(@db, @creds)
+      .liquibase(@connForge)
       .update('db/io/migration/test-changelog.sql')
 
     @update_builder = DbIo::UpdateBuilder.new
