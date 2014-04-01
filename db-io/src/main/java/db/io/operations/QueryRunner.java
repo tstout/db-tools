@@ -1,7 +1,6 @@
 package db.io.operations;
 
-import db.io.Database;
-import db.io.config.DBCredentials;
+import db.io.config.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,22 +8,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Throwables.*;
 
 class QueryRunner implements Query {
-    private final Database db;
-    private final DBCredentials creds;
     private final SqlStmt stmtFactory = SqlStmt.Default;
+    private final ConnectionFactory connForge;
 
-    QueryRunner(Database db, DBCredentials creds) {
-        this.db = checkNotNull(db);
-        this.creds = checkNotNull(creds);
+    QueryRunner(ConnectionFactory connForge) {
+        this.connForge = checkNotNull(connForge);
     }
 
     @Override public <T> Collection<T> execute(Class<T> intf, String sql, Object... args) {
         try (
-                Connection conn = db.connection(creds);
+                Connection conn = connForge.connection();
                 PreparedStatement statement = stmtFactory.prepare(conn, sql, args);
                 ResultSet rs = statement.executeQuery()
         ) {

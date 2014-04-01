@@ -1,25 +1,32 @@
 package db.io.operations;
 
 import db.io.Database;
+import db.io.config.ConnectionFactory;
 import db.io.config.DBCredentials;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class QueryBuilder {
     private Database db;
     private DBCredentials dbCreds;
+    private ConnectionFactory factory;
 
     public QueryBuilder withCreds(DBCredentials dbCreds) {
-        this.dbCreds = dbCreds;
+        this.dbCreds = checkNotNull(dbCreds);
         return this;
     }
 
     public QueryBuilder withDb(Database db) {
-        this.db = db;
+        this.db = checkNotNull(db);
+        return this;
+    }
+
+    public QueryBuilder withConnFactory(ConnectionFactory factory) {
+        this.factory = factory;
         return this;
     }
 
     public Query build() {
-        return new QueryRunner(checkNotNull(db), checkNotNull(dbCreds));
+        return new QueryRunner(factory == null ? new ConnectionFactory(dbCreds, db) : factory);
     }
 }

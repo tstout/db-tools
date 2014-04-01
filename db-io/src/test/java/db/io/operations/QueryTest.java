@@ -2,6 +2,7 @@ package db.io.operations;
 
 import db.io.Database;
 import db.io.UnitTests;
+import db.io.config.ConnectionFactory;
 import db.io.config.DBCredentials;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 @Category(UnitTests.class)
 public class QueryTest {
-    // TODO - a little heavy on the mocking here...short of loading up an in-memory DB, what else can be done?
+    // TODO - a little heavy on the mocking here...
     @Mock PreparedStatement stmt;
     @Mock Database db;
     @Mock DBCredentials creds;
@@ -58,7 +59,7 @@ public class QueryTest {
 
     @Test
     public void read_a_single_row() throws SQLException {
-        Query query = new QueryRunner(db, creds);
+        Query query = new QueryRunner(new ConnectionFactory(creds, db));
 
         Collection<SomeData> result = query.execute(SomeData.class, "arbitrary sql...");
         assertThat(result.size(), is(1));
@@ -75,6 +76,18 @@ public class QueryTest {
         Collection<SomeData> result = new QueryBuilder()
                 .withDb(db)
                 .withCreds(creds)
+                .build()
+                .execute(SomeData.class, "sql returning columns matching methods in SomeData...");
+
+        assertThat(result.size(), is(1));
+        assertThat(from(result).first().get().descr(), is("description val"));
+        assertThat(from(result).first().get().id(), is(1));
+    }
+
+    @Test
+    public void read_a_single_row_with_builder_and_factory() {
+        Collection<SomeData> result = new QueryBuilder()
+                .withConnFactory(new ConnectionFactory(creds, db))
                 .build()
                 .execute(SomeData.class, "sql returning columns matching methods in SomeData...");
 

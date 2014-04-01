@@ -19,21 +19,16 @@ class TestQuery < MiniTest::Test
         DbIo::H2Credentials.h2_mem_creds('dbio-test'),
         DbIo::H2Db.new)
 
-    @creds = DbIo::H2Credentials.h2_mem_creds('dbio-test')
-    @db = DbIo::H2Db.new
-
     DbIo::Migrators
-      .liquibase(@connForge)
-      .update('db/io/migration/test-changelog.sql')
+    .liquibase(@connForge)
+    .update('db/io/migration/test-changelog.sql')
 
     @update_builder = DbIo::UpdateBuilder.new
-      .with_creds(@creds)
-      .with_db(@db)
+    .with_conn_factory(@connForge)
 
     @query = DbIo::QueryBuilder.new
-      .with_creds(@creds)
-      .with_db(@db)
-      .build
+    .with_conn_factory(@connForge)
+    .build
   end
 
   # Currently, the java proxy-related code for querying only supports interfaces.
@@ -47,14 +42,14 @@ class TestQuery < MiniTest::Test
 
   def test_basic_read_write
     @update_builder
-      .add_op('insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)',
-                Timestamp.new(@now),
-                 'test msg',
-                 'DEBUG',
-                 'test.logger',
-                 'test.thread')
-      .build
-      .update
+    .add_op('insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)',
+            Timestamp.new(@now),
+            'test msg',
+            'DEBUG',
+            'test.logger',
+            'test.thread')
+    .build
+    .update
 
     result = @query.execute(DbIo::LogRecord.java_class, 'select * from db_io.logs')
 
