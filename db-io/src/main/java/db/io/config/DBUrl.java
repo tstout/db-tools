@@ -1,6 +1,7 @@
 package db.io.config;
 
-import java.util.Objects;
+
+import com.google.common.base.Objects;
 
 public class DBUrl implements Property<String> {
     private final String val;
@@ -14,12 +15,12 @@ public class DBUrl implements Property<String> {
     }
 
     @Override public int hashCode() {
-        return Objects.hash(val);
+        return Objects.hashCode(val);
     }
 
     @Override public boolean equals(Object obj) {
         return obj != null &&
                 getClass() == obj.getClass() &&
-                Objects.equals(this, obj);
+                Objects.equal(this, obj);
     }
 }
