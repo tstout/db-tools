@@ -1,4 +1,2 @@
-language: java
-
 script:
    - gradle -PsonatypeUsername=foo@gmail.com -PsonatypePassword=bar -i test
