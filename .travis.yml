@@ -1,6 +1,4 @@
 language: java
 
-env:
-  global:
-    - sonatypeUsername=:foo
-    - sonatypePassword=:bar
+script:
+   - gradle -PsonatypeUsername=foo@gmail.com -PsonatypePassword=bar -i test
