@@ -24,8 +24,8 @@ There's not much to get between you and your data.
 db.io Features 
 ---
 * Specify the columns you want via plain old java interfaces. No need to
-implement or generate all that getter/setter noise. All the getInt/String/Date etc
-on a ResultSet is automatic.
+implement or generate all that getter/setter noise. 
+* All the getInt, getString, getDate, etc. on a ResultSet is automatic.
 
 * Need migration support for your schema? Of course you do. A simple migration API is 
 provided (backed by liquibase).
