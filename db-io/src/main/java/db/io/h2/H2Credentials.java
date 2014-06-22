@@ -8,7 +8,7 @@ public final class H2Credentials {
 
     private H2Credentials() {
     }
-
+    // TODO - need user/pass version...
     public static DBCredentials h2MemCreds(String dbName) {
         return new DBCredentials.Default(
                 H2Urls.memDB(dbName),
