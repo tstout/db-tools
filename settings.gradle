@@ -1,1 +1,2 @@
-include 'schemagen', 'db-io'
+include 'db-io', 'db-tool'
+

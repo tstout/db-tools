@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Throwables.*;
 import static com.google.common.collect.FluentIterable.*;
 import static com.google.common.collect.Maps.*;
@@ -101,8 +101,7 @@ class ArgSetter {
             }
         },
         INT {
-            @Override
-            void set(int index, PreparedStatement stmt, Object value) throws SQLException {
+            @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
                 stmt.setInt(index, (Integer) value);
             }
 
@@ -111,8 +110,7 @@ class ArgSetter {
             }
         },
         STRING {
-            @Override
-            void set(int index, PreparedStatement stmt, Object value) throws SQLException {
+            @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
                 stmt.setString(index, (String) value);
             }
 
@@ -151,7 +149,7 @@ class ArgSetter {
             @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
                 DATE.set(index,
                         stmt,
-                        new java.sql.Date(((java.util.Date)value).getTime()));
+                        new java.sql.Date(((java.util.Date) value).getTime()));
             }
 
             @Override Class<?> type() {
@@ -160,6 +158,7 @@ class ArgSetter {
         };
 
         abstract void set(int index, PreparedStatement stmt, Object value) throws SQLException;
+
         abstract Class<?> type();
     }
 }

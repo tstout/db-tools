@@ -6,6 +6,7 @@ import db.io.config.DBCredentials;
 
 import static com.google.common.base.Preconditions.*;
 
+// TODO - this seems redundant with respect to ConnectionFactory...
 public class QueryBuilder {
     private Database db;
     private DBCredentials dbCreds;

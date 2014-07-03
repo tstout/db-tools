@@ -1,7 +1,4 @@
-import org.h2.tools.Server
-
 apply plugin: 'java'
-apply plugin: 'liquibase'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'maven-publish'
@@ -100,7 +97,6 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.augusttechgroup:gradle-liquibase-plugin:0.7'
         classpath 'com.h2database:h2:1.3.167'
     }
 }
@@ -114,25 +110,6 @@ test {
     useJUnit {
         includeCategories 'db.io.UnitTests'
     }
-}
-
-liquibase {
-    changelogs {
-        main {
-//            file = file('src/test/java/db/io/test-changelog.groovy')
-            file = file('src/test/java/db/io/test-changelog.sql')
-        }
-    }
-
-    databases {
-        dbio_test {
-            url = 'jdbc:h2:tcp://127.0.0.1/~/.dbio/dbio-test'
-            username = 'sa'
-            password = ''
-        }
-    }
-
-    defaultDatabase = databases.dbio_test
 }
 
 //task integrationTest(dependsOn: startH2, type: Test) {
