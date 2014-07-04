@@ -20,7 +20,7 @@ dependencies {
 
 task generateGrammarSources(type: JavaExec) {
     def grammarFiles = fileTree('src/main/antlr4').include('**/*.g4')
-    ext.outputPath = "${project.buildDir}/generated-src/antlr4/main/java/dbtools"
+    ext.outputPath = "${project.projectDir}/target/generated-src/antlr4/main/java/dbtools"
     inputs.files grammarFiles
     outputs.dir outputPath
     classpath configurations.antlr4
@@ -28,7 +28,7 @@ task generateGrammarSources(type: JavaExec) {
     args('-package')
     args('dbtools')
     args('-o')
-    args("${project.buildDir}/generated-src/antlr4/main/java/dbtools")
+    args("${project.projectDir}/target/generated-src/antlr4/main/java/dbtools")
     args('-visitor')
     args(grammarFiles.files)
 
