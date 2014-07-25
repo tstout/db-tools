@@ -16,6 +16,8 @@ public final class H2Credentials {
                 new DBUser("sa"));
     }
 
+    // TODO refactor to remove h2 from method names...
+
     public static DBCredentials h2LocalServerCreds(String dbName, String dir) {
         return new DBCredentials.Default(
                 H2Urls.localServerDB(dbName, dir),

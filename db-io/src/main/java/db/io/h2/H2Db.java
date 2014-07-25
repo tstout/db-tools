@@ -13,7 +13,8 @@ import static com.google.common.base.Throwables.*;
 
 // TODO - should this implement closable?
 public class H2Db implements Database {
-    private final CacheLoader<DBCredentials, JdbcConnectionPool> loader = new CacheLoader<DBCredentials, JdbcConnectionPool>() {
+    private final CacheLoader<DBCredentials, JdbcConnectionPool> loader =
+            new CacheLoader<DBCredentials, JdbcConnectionPool>() {
 
         @Override public JdbcConnectionPool load(DBCredentials key) throws Exception {
             return JdbcConnectionPool.create(
@@ -36,3 +37,7 @@ public class H2Db implements Database {
         }
     }
 }
+
+
+
+

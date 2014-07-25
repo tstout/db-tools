@@ -1,9 +1,11 @@
 package dbtools.cmdopts;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.base.Preconditions.*;
+import static com.google.common.collect.Lists.*;
 
 public class Cmd {
     private final List<CmdOpt> options;
@@ -23,7 +25,7 @@ public class Cmd {
     }
 
     public List<CmdOpt> options() {
-        return options;
+        return ImmutableList.copyOf(options);
     }
 
     public static class CmdBuilder {

@@ -7,8 +7,6 @@ A collection of libraries and utilities for everyday database tasks.
 db.io Motivation 
 ---
 * Are you frustrated from dealing with a complex ORM? 
-* Do you fee dirty when mapping your objects
-and tables/views one-to-one? 
 * Have you spent way too much time looking
 on StackOverflow or stepping through library code to find the elusive incantations 
 needed to accomplish what should be simple?
@@ -28,7 +26,7 @@ implement or generate all that getter/setter noise.
 * All the getInt, getString, getDate, etc. on a ResultSet is automatic.
 
 * Need migration support for your schema? Of course you do. A simple migration API is 
-provided (backed by liquibase).
+provided (currently a trivial liquibase wrapper).
 
 do.io TODO 
 ---

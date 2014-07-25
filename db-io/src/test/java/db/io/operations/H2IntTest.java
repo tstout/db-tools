@@ -3,7 +3,6 @@ package db.io.operations;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import db.io.Database;
 import db.io.IntegrationTests;
-import db.io.config.ConnectionFactory;
 import db.io.config.DBCredentials;
 import db.io.h2.H2Db;
 import db.io.migration.Migrators;
@@ -19,7 +18,7 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import static com.google.common.collect.FluentIterable.*;
-import static db.io.h2.H2Credentials.h2MemCreds;
+import static db.io.h2.H2Credentials.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -39,7 +38,7 @@ public class H2IntTest {
 
     @Before
     public void setup() {
-        Migrators.liquibase(new ConnectionFactory(creds, db))
+        Migrators.liquibase(db, creds)
                 .update("db/io/migration/test-changelog.sql");
 
         uBuilder.addOp("insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
