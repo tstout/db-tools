@@ -1,10 +1,8 @@
 package db.io.operations;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
-import db.io.Database;
 import db.io.IntegrationTests;
-import db.io.config.DBCredentials;
-import db.io.h2.H2Db;
+import db.io.core.ConnFactory;
 import db.io.migration.Migrators;
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +16,9 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import static com.google.common.collect.FluentIterable.*;
-import static db.io.h2.H2Credentials.*;
+import static db.io.config.Databases.DBVendor.*;
+import static db.io.config.Databases.*;
+import static db.io.operations.Queries.newQuery;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -27,18 +27,16 @@ public class H2IntTest {
     @Rule
     public TestRule benchmarkRun = new BenchmarkRule();
 
-    DBCredentials creds = h2MemCreds("dbio-test");
-    Database db = new H2Db();
+    ConnFactory conns = newConnFactory(H2_MEM, newCreds().withDBName("dbio-test"));
 
     long now = Calendar.getInstance().getTimeInMillis();
 
     UpdateBuilder uBuilder = new UpdateBuilder()
-            .withCreds(creds)
-            .withDb(db);
+          .withConnFactory(conns);
 
     @Before
     public void setup() {
-        Migrators.liquibase(db, creds)
+        Migrators.liquibase(conns)
                 .update("db/io/migration/test-changelog.sql");
 
         uBuilder.addOp("insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
@@ -60,10 +58,7 @@ public class H2IntTest {
 
     @Test
     public void basic_read_write() {
-        Query q = new QueryBuilder()
-                .withCreds(creds)
-                .withDb(new H2Db())
-                .build();
+        Query q = newQuery(conns);
 
         Collection<LogRecord> result = q.execute(LogRecord.class, "select * from db_io.logs");
 

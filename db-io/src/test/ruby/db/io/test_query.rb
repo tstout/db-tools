@@ -7,7 +7,7 @@ java_import 'java.util.Calendar'
 
 module DbIo
   include_package 'db.io.operations'
-  include_package 'db.io.h2'
+  #include_package 'db.io.h2'
   include_package 'db.io.migration'
   include_package 'db.io.config'
 end
@@ -15,9 +15,11 @@ end
 class TestQuery < MiniTest::Test
   def setup
     @now = Calendar.getInstance.getTimeInMillis
-    @connForge = DbIo::ConnectionFactory.new(
-        DbIo::H2Credentials.h2_mem_creds('dbio-test'),
-        DbIo::H2Db.new)
+
+    @connForge = DbIo::Databases.new_conn_factory(DbIo::Databases::DBVendor::H2_MEM,
+                                                  DbIo::Databases.new_creds().with_dbname('db-test'));
+        # db.io.core.H2Credentials.h2_mem_creds('dbio-test'),
+        # db.io.core.H2Db.new)
 
     DbIo::Migrators
     .liquibase(@connForge)

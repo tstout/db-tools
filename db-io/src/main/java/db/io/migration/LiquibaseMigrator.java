@@ -1,7 +1,6 @@
 package db.io.migration;
 
-import db.io.Database;
-import db.io.config.DBCredentials;
+import db.io.core.ConnFactory;
 import liquibase.Liquibase;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
@@ -13,14 +12,10 @@ import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Throwables.*;
 
 class LiquibaseMigrator implements Migrator {
-    private final Database db;
-    private final DBCredentials creds;
     private final Connection conn;
 
-    LiquibaseMigrator(Database db, DBCredentials creds) {
-        this.db = checkNotNull(db);
-        this.creds = checkNotNull(creds);
-        this.conn = db.connection(creds);
+    LiquibaseMigrator(ConnFactory connFactory) {
+        this.conn = connFactory.connection();
     }
 
     @Override

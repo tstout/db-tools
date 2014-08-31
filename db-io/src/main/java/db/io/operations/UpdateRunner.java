@@ -1,6 +1,6 @@
 package db.io.operations;
 
-import db.io.config.ConnectionFactory;
+import db.io.core.ConnFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,12 +13,12 @@ import static com.google.common.collect.Lists.*;
 
 
 class UpdateRunner implements Update {
-    private final ConnectionFactory connForge;
+    private final ConnFactory connForge;
     private final SqlStmt stmtFactory = SqlStmt.Default;
     private final ArgSetter argSetter = new ArgSetter();
     private final Collection<UpdateOp> ops;
 
-    UpdateRunner(ConnectionFactory connForge, Collection<UpdateOp> ops) {
+    UpdateRunner(ConnFactory connForge, Collection<UpdateOp> ops) {
         this.connForge = checkNotNull(connForge);
         this.ops = checkNotNull(ops);
     }

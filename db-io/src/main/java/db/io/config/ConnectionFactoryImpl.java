@@ -1,20 +1,22 @@
 package db.io.config;
 
-import db.io.Database;
+import db.io.core.ConnFactory;
+import db.io.core.Database;
 
 import java.sql.Connection;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
-public class ConnectionFactory {
+class ConnectionFactoryImpl implements ConnFactory {
     private final DBCredentials creds;
     private final Database db;
 
-    public ConnectionFactory(DBCredentials creds, Database db) {
+    ConnectionFactoryImpl(DBCredentials creds, Database db) {
         this.db = checkNotNull(db);
         this.creds = checkNotNull(creds);
     }
 
+    @Override
     public Connection connection() {
         return db.connection(creds);
     }
