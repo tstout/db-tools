@@ -51,7 +51,7 @@ class TestQuery < MiniTest::Test
             'test.logger',
             'test.thread')
     .build
-    .update
+    .run
 
     result = @query.execute(DbIo::LogRecord.java_class, 'select * from db_io.logs')
 

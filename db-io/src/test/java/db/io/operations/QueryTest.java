@@ -60,8 +60,8 @@ public class QueryTest {
     @Test
     public void read_a_single_row() throws SQLException {
         Collection<SomeData> result =
-                query.execute(SomeData.class,
-                "sql returning columns matching methods in SomeData...");
+                query.run(SomeData.class,
+                        "sql returning columns matching methods in SomeData...");
 
         assertThat(result.size(), is(1));
 

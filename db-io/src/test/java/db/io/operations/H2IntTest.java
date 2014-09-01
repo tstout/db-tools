@@ -3,7 +3,6 @@ package db.io.operations;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import db.io.IntegrationTests;
 import db.io.core.ConnFactory;
-import db.io.migration.Migrators;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,7 +17,9 @@ import java.util.Collection;
 import static com.google.common.collect.FluentIterable.*;
 import static db.io.config.Databases.DBVendor.*;
 import static db.io.config.Databases.*;
-import static db.io.operations.Queries.newQuery;
+import static db.io.migration.Migrators.*;
+import static db.io.operations.Queries.*;
+import static db.io.operations.Updates.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -32,35 +33,34 @@ public class H2IntTest {
     long now = Calendar.getInstance().getTimeInMillis();
 
     UpdateBuilder uBuilder = new UpdateBuilder()
-          .withConnFactory(conns);
+            .withConnFactory(conns);
 
     @Before
     public void setup() {
-        Migrators.liquibase(conns)
-                .update("db/io/migration/test-changelog.sql");
+        liquibase(conns)
+            .update(getClass(), "/db/io/migration/test_changelog.sql");
 
-        uBuilder.addOp("insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
+        newUpdate(conns,
+                "insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
                 new Timestamp(now),
                 "test msg",
                 "DEBUG",
                 "test.logger",
                 "test.thread")
-                .build()
-                .update();
+                .run();
     }
 
     @After
     public void tearDown() {
-        uBuilder.addOp("delete from db_io.logs")
-                .build()
-                .update();
+        newUpdate(conns, "delete from db_io.logs")
+                .run();
     }
 
     @Test
     public void basic_read_write() {
         Query q = newQuery(conns);
 
-        Collection<LogRecord> result = q.execute(LogRecord.class, "select * from db_io.logs");
+        Collection<LogRecord> result = q.run(LogRecord.class, "select * from db_io.logs");
 
         assertThat(result.size(), not(0));
 

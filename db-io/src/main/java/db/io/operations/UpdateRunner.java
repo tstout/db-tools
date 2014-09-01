@@ -23,7 +23,7 @@ class UpdateRunner implements Update {
         this.ops = checkNotNull(ops);
     }
 
-    @Override public Collection<Integer> update() {
+    @Override public Collection<Integer> run() {
         Collection<Integer> results = newArrayList();
         try (
                 Connection conn = connForge.connection()

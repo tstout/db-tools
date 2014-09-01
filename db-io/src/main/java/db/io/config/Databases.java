@@ -37,14 +37,14 @@ public final class Databases {
                H2_MEM, H2Creds.memCreds());
 
     public static ConnFactory newConnFactory(DBVendor db, DBCredentials.Builder creds) {
-        return new ConnectionFactoryImpl(newCreds(db, creds), newDB(db, creds));
+        return new ConnectionFactoryImpl(newCreds(db, creds), newDB(db));
     }
 
     public static DBCredentials.Builder newCreds() {
         return new DBCredentials.Builder();
     }
 
-    private static Database newDB(DBVendor db, DBCredentials.Builder creds) {
+    private static Database newDB(DBVendor db) {
         return DATABASES
                 .get(db)
                 .get();

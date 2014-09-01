@@ -19,7 +19,7 @@ class QueryRunner implements Query {
         this.connForge = checkNotNull(connForge);
     }
 
-    @Override public <T> Collection<T> execute(Class<T> intf, String sql, Object... args) {
+    @Override public <T> Collection<T> run(Class<T> intf, String sql, Object... args) {
         try (
                 Connection conn = connForge.connection();
                 PreparedStatement statement = stmtFactory.prepare(conn, sql, args);
