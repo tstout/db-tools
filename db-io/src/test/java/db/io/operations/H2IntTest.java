@@ -38,7 +38,7 @@ public class H2IntTest {
     @Before
     public void setup() {
         liquibase(conns)
-            .update(getClass(), "/db/io/migration/test_changelog.sql");
+            .update(getClass(), "/db/io/migration/test-changelog.sql");
 
         newUpdate(conns,
                 "insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
