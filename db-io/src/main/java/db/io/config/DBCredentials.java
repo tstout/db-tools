@@ -36,7 +36,12 @@ public interface DBCredentials {
             return this;
         }
 
-        public Builder withDbDir(DBDir dbDir) {
+        public Builder withDBDir(String dbDir) {
+            this.dbDir = new DBDir(dbDir);
+            return this;
+        }
+
+        public Builder withDBDir(DBDir dbDir) {
             this.dbDir = checkNotNull(dbDir);
             return this;
         }

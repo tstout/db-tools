@@ -14,7 +14,7 @@ class H2Url extends DBUrl {
     }
 
     static H2Url localServer(DBName dbName, String dir) {
-        String partialUrl = format("//127.0.0.1/%s/%s", dir, dbName);
+        String partialUrl = format("//127.0.0.1/%s/%s", dir, dbName.value());
         return new H2Url(format(FMT, "tcp", partialUrl));
     }
 

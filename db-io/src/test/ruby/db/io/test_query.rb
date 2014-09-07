@@ -1,3 +1,4 @@
+
 # this required gem invocation seems funky to me, but I do like minitest
 gem 'minitest'
 require 'minitest/autorun'
@@ -16,7 +17,7 @@ class TestQuery < MiniTest::Test
   def setup
     @now = Calendar.getInstance.getTimeInMillis
 
-    @connForge = DbIo::Databases.new_conn_factory(DbIo::Databases::DBVendor::H2_MEM,
+    @connForge = DbIo::Databases.new_conn_factory(DbIo::DBVendor::H2_MEM,
                                                   DbIo::Databases.new_creds().with_db_name('db-test'))
     DbIo::Migrators
     .liquibase(@connForge)

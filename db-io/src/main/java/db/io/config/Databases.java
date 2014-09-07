@@ -8,34 +8,16 @@ import db.io.core.Database;
 
 import static com.google.common.base.Suppliers.*;
 import static com.google.common.collect.ImmutableMap.*;
-import static db.io.config.Databases.DBVendor.*;
+import static db.io.config.DBVendor.*;
 
 public final class Databases {
     private Databases() {
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * Supported Databases
+     * Create a new connection factory for a particular databse.
      */
-    public enum DBVendor {
-        /**
-         * The H2 database, brought to you by Thomas Mueller and friends.
-         */
-        H2_SERVER,
-        H2_LOCAL_SERVER,
-        H2_MEM
-    }
-
-    private static final ImmutableMap<DBVendor, Supplier<Database>> DATABASES =
-            of(H2_SERVER, memoize(H2Db.supplier()),
-               H2_LOCAL_SERVER, memoize(H2Db.supplier()),
-               H2_MEM, memoize(H2Db.supplier()));
-
-    private static final ImmutableMap<DBVendor, Function<DBCredentials.Builder, DBCredentials>> CREDS =
-            of(H2_LOCAL_SERVER, H2Creds.localServerCreds(),
-               H2_SERVER, H2Creds.serverCreds(),
-               H2_MEM, H2Creds.memCreds());
-
     public static ConnFactory newConnFactory(DBVendor db, DBCredentials.Builder creds) {
         return new ConnectionFactoryImpl(newCreds(db, creds), newDB(db));
     }
@@ -43,6 +25,17 @@ public final class Databases {
     public static DBCredentials.Builder newCreds() {
         return new DBCredentials.Builder();
     }
+
+    private static final ImmutableMap<DBVendor, Supplier<Database>> DATABASES =
+            of(H2_REMOTE_SERVER, memoize(H2Db.supplier()),
+                    H2_LOCAL_SERVER, memoize(H2Db.supplier()),
+                    H2_MEM, memoize(H2Db.supplier()));
+
+    private static final ImmutableMap<DBVendor, Function<DBCredentials.Builder, DBCredentials>> CREDS =
+            of(H2_LOCAL_SERVER, H2Creds.localServerCreds(),
+                    H2_REMOTE_SERVER, H2Creds.serverCreds(),
+                    H2_MEM, H2Creds.memCreds());
+
 
     private static Database newDB(DBVendor db) {
         return DATABASES

@@ -15,8 +15,9 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import static com.google.common.collect.FluentIterable.*;
-import static db.io.config.Databases.DBVendor.*;
+import static db.io.config.DBVendor.*;
 import static db.io.config.Databases.*;
+import static db.io.config.Resources.*;
 import static db.io.migration.Migrators.*;
 import static db.io.operations.Queries.*;
 import static db.io.operations.Updates.*;
@@ -25,6 +26,8 @@ import static org.junit.Assert.*;
 
 @Category(IntegrationTests.class)
 public class H2IntTest {
+    static final String INSERT_SQL = load("/db/io/migration/insert-log.sql");
+
     @Rule
     public TestRule benchmarkRun = new BenchmarkRule();
 
@@ -32,17 +35,13 @@ public class H2IntTest {
 
     long now = Calendar.getInstance().getTimeInMillis();
 
-    UpdateBuilder uBuilder = new UpdateBuilder()
-            .withConnFactory(conns);
-
     @Before
     public void setup() {
         liquibase(conns)
             .update(getClass(), "/db/io/migration/test-changelog.sql");
 
         newUpdate(conns,
-                "insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)",
-                new Timestamp(now),
+                INSERT_SQL,
                 "test msg",
                 "DEBUG",
                 "test.logger",
