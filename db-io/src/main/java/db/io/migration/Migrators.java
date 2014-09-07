@@ -1,14 +1,11 @@
 package db.io.migration;
 
-import db.io.config.ConnectionFactory;
+import db.io.core.ConnFactory;
 
 public final class Migrators {
+    private Migrators() {}
 
-    private Migrators() {
-        throw new UnsupportedOperationException();
-    }
-
-    public static Migrator liquibase(ConnectionFactory connForge) {
-        return new LiquibaseMigrator(connForge);
+    public static Migrator liquibase(ConnFactory connFactory) {
+        return new LiquibaseMigrator(connFactory);
     }
 }

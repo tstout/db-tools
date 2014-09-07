@@ -1,0 +1,41 @@
+apply plugin: 'java'
+apply plugin:'application'
+
+mainClassName = "dbtools.schemagen.Main"
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    antlr4
+}
+
+dependencies {
+    antlr4 'org.antlr:antlr4:4.0'
+    compile ('org.antlr:antlr4-runtime:4.0',
+            libraries.runtime_core)
+    testCompile (libraries.test_core)
+}
+
+task generateGrammarSources(type: JavaExec) {
+    def grammarFiles = fileTree('src/main/antlr4').include('**/*.g4')
+    ext.outputPath = "${project.projectDir}/target/generated-src/antlr4/main/java/dbtools"
+    inputs.files grammarFiles
+    outputs.dir outputPath
+    classpath configurations.antlr4
+    main = 'org.antlr.v4.Tool'
+    args('-package')
+    args('dbtools')
+    args('-o')
+    args("${project.projectDir}/target/generated-src/antlr4/main/java/dbtools")
+    args('-visitor')
+    args(grammarFiles.files)
+
+}
+
+sourceSets.main.java.srcDir generateGrammarSources.outputPath
+compileJava.dependsOn generateGrammarSources
+
+
+

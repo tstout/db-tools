@@ -4,26 +4,26 @@ import com.google.common.base.Objects;
 
 import static com.google.common.base.Optional.*;
 
-public class DBPwd implements Property<String> {
+public class DBHost implements Property<String> {
     private final String val;
 
-    public DBPwd(String val) { this.val = val; }
+    public DBHost(String val) {
+        this.val = val;
+    }
 
-    public DBPwd() { this.val = null; }
+    public DBHost() {
+        this.val = null;
+    }
 
     @Override public String value() {
         return fromNullable(val).or("");
-    }
-
-    @Override public int hashCode() {
-        return Objects.hashCode(val);
     }
 
     @Override public boolean equals(Object obj) {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
 
-        final DBPwd other = (DBPwd) obj;
+        final DBHost other = (DBHost) obj;
         return Objects.equal(this.val, other.val);
     }
 }

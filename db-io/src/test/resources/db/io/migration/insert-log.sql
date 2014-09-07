@@ -1,0 +1,1 @@
+insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)

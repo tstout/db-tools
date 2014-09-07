@@ -1,3 +1,5 @@
+
+# this required gem invocation seems funky to me, but I do like minitest
 gem 'minitest'
 require 'minitest/autorun'
 require 'java'
@@ -7,7 +9,6 @@ java_import 'java.util.Calendar'
 
 module DbIo
   include_package 'db.io.operations'
-  include_package 'db.io.h2'
   include_package 'db.io.migration'
   include_package 'db.io.config'
 end
@@ -15,20 +16,15 @@ end
 class TestQuery < MiniTest::Test
   def setup
     @now = Calendar.getInstance.getTimeInMillis
-    @connForge = DbIo::ConnectionFactory.new(
-        DbIo::H2Credentials.h2_mem_creds('dbio-test'),
-        DbIo::H2Db.new)
 
+    @connForge = DbIo::Databases.new_conn_factory(DbIo::DBVendor::H2_MEM,
+                                                  DbIo::Databases.new_creds().with_db_name('db-test'))
     DbIo::Migrators
     .liquibase(@connForge)
-    .update('db/io/migration/test-changelog.sql')
+    .update('/db/io/migration/test-changelog.sql')
 
-    @update_builder = DbIo::UpdateBuilder.new
-    .with_conn_factory(@connForge)
+    @query = DbIo::Queries.new_query(@connForge)
 
-    @query = DbIo::QueryBuilder.new
-    .with_conn_factory(@connForge)
-    .build
   end
 
   # Currently, the java proxy-related code for querying only supports interfaces.
@@ -41,17 +37,16 @@ class TestQuery < MiniTest::Test
   # interface, only implement one.
 
   def test_basic_read_write
-    @update_builder
-    .add_op('insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)',
-            Timestamp.new(@now),
-            'test msg',
-            'DEBUG',
-            'test.logger',
-            'test.thread')
-    .build
-    .update
+    DbIo::Updates.new_update(@connForge,
+                             'insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)',
+                             Timestamp.new(@now),
+                             'test msg',
+                             'DEBUG',
+                             'test.logger',
+                             'test.thread')
+    .run
 
-    result = @query.execute(DbIo::LogRecord.java_class, 'select * from db_io.logs')
+    result = @query.run(DbIo::LogRecord.java_class, 'select * from db_io.logs')
 
     refute_equal(result.size, 0)
     assert_equal(result.first.msg, 'test msg')

@@ -1,6 +1,6 @@
 package db.io.operations;
 
-import db.io.config.ConnectionFactory;
+import db.io.core.ConnFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,13 +13,13 @@ import static com.google.common.base.Throwables.*;
 
 class QueryRunner implements Query {
     private final SqlStmt stmtFactory = SqlStmt.Default;
-    private final ConnectionFactory connForge;
+    private final ConnFactory connForge;
 
-    QueryRunner(ConnectionFactory connForge) {
+    QueryRunner(ConnFactory connForge) {
         this.connForge = checkNotNull(connForge);
     }
 
-    @Override public <T> Collection<T> execute(Class<T> intf, String sql, Object... args) {
+    @Override public <T> Collection<T> run(Class<T> intf, String sql, Object... args) {
         try (
                 Connection conn = connForge.connection();
                 PreparedStatement statement = stmtFactory.prepare(conn, sql, args);
