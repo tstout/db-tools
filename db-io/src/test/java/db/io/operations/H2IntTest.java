@@ -42,6 +42,7 @@ public class H2IntTest {
 
         newUpdate(conns,
                 INSERT_SQL,
+                new Timestamp(now),
                 "test msg",
                 "DEBUG",
                 "test.logger",
@@ -67,7 +68,7 @@ public class H2IntTest {
 
         assertThat(record.id(), not(0));
         assertThat(record.level(), is("DEBUG"));
-        assertThat(record.logger(), is("test.logger"));
+        assertThat(record.loggerName(), is("test.logger"));
         assertThat(record.thread(), is("test.thread"));
         assertThat(record.msg(), is("test msg"));
         assertThat(record.when(), is(new Timestamp(now)));

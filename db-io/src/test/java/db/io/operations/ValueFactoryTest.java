@@ -21,6 +21,7 @@ public class ValueFactoryTest {
     interface SomeData {
         int count();
         String descr();
+        String camelName();
     }
 
     @Test
@@ -28,11 +29,14 @@ public class ValueFactoryTest {
         DataSet ds = new DataSet();
         Column intCol = new Column(Integer.class, "count", 25);
         Column strCol = new Column(String.class, "descr", "test-val");
+        Column camelCol = new Column(String.class, "camel_name", "test-camel-val");
 
         ds.put(0, intCol);
         ds.put(0, strCol);
+        ds.put(0, camelCol);
         ds.put(1, intCol);
         ds.put(1, strCol);
+        ds.put(1, camelCol);
 
         ValueFactory factory = new ValueFactory(SomeData.class, ds);
         Collection<SomeData> data = factory.create(SomeData.class, ds);

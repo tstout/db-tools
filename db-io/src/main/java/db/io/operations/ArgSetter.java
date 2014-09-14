@@ -35,7 +35,7 @@ class ArgSetter {
         }
     }
 
-    void setValues(PreparedStatement stmt, Object[] args) {
+    PreparedStatement setValues(PreparedStatement stmt, Object[] args) {
         int index = 1;
 
         for (Object arg : args) {
@@ -50,6 +50,7 @@ class ArgSetter {
                 throw propagate(e);
             }
         }
+        return stmt;
     }
 
     private Setters lookup(Class klazz) {
@@ -133,7 +134,7 @@ class ArgSetter {
             }
 
             @Override Class<?> type() {
-                return BigDecimal.class;
+                return java.math.BigDecimal.class;
             }
         },
         DATE {

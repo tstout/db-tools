@@ -7,6 +7,6 @@ public interface LogRecord {
     Timestamp when();
     String msg();
     String level();
-    String logger();
+    String loggerName();
     String thread();
 }

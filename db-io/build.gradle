@@ -30,7 +30,7 @@ artifacts {
 }
 
 group = 'com.github.tstout'
-version = '1.0.0'
+version = '1.0.1'
 
 signing {
     sign configurations.archives
@@ -41,7 +41,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'com.github.tstout'
             artifactId 'db-io'
-            version '1.0.0'
+            version '1.0.1'
 
             from components.java
 
