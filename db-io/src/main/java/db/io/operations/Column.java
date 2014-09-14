@@ -44,4 +44,11 @@ class Column {
                Objects.equal(this.value, other.value) &&
                Objects.equal(this.name, other.name);
     }
+
+    @Override public String toString() {
+        return Objects.toStringHelper(getClass())
+                .add("Name", this.name)
+                .add("Type", this.type)
+                .toString();
+    }
 }

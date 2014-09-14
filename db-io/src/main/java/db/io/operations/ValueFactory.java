@@ -1,6 +1,8 @@
 package db.io.operations;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
 import java.lang.reflect.InvocationHandler;
@@ -18,6 +20,7 @@ import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Maps.*;
 import static com.google.common.collect.Sets.*;
 import static com.google.common.reflect.Reflection.*;
+import static java.lang.String.*;
 
 class ValueFactory {
     private final Class<?> interfaceType;
@@ -78,10 +81,8 @@ class ValueFactory {
         static Predicate<Column> methodNameMatches(final Method method) {
             return new Predicate<Column>() {
                 public boolean apply(Column input) {
-                    return input.name()
-                            .toLowerCase()
-                            .equals(dbColToMethod()
-                                    .apply(method.getName()));
+                    return method.getName()
+                            .equalsIgnoreCase(dbColToMethod().apply(input.name()));
                 }
             };
         }
@@ -106,10 +107,18 @@ class ValueFactory {
             for (Method m : from(methodNames)
                     .transform(Fn.intfToMethods(interfaceType))) {
 
-                Column col = from(row)
-                        .firstMatch(Fn.methodNameMatches(m)).get();
+                Optional<Column> col = from(row)
+                        .firstMatch(Fn.methodNameMatches(m));
 
-                values.put(m, col.val(col.type()));
+                if (!col.isPresent()) {
+                    throw new RuntimeException(
+                            format("Unable to map intf method %s to column\nmethod names:\n%s\nColumn Names:\n%s",
+                                    m.getName(),
+                                    Joiner.on('\n').join(methodNames),
+                                    Joiner.on('\n').join(row)));
+                }
+
+                values.put(m, col.get().val(col.get().type()));
             }
         }
 

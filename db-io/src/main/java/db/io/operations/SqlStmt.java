@@ -14,7 +14,8 @@ interface SqlStmt {
         public PreparedStatement prepare(Connection conn, String sql, Object... args) {
             try {
                 // TODO - add parsing to handle named parms...
-                return conn.prepareStatement(sql);
+                return new ArgSetter()
+                      .setValues(conn.prepareStatement(sql), args);
             } catch (SQLException e) {
                 throw propagate(e);
             }
