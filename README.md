@@ -1,3 +1,4 @@
+
 # db-tools 
 
 A collection of libraries and utilities for everyday database tasks.
@@ -38,7 +39,8 @@ implement a couple of interfaces.
  
 #do.io TODO 
 
-* Show some examples! (There are are tests, but that is no excuse for proper documentation)
+* Show some examples! (There arex
+ tests, but that is no excuse for proper documentation)
 * Implement named query parameters
 * Test with Oracle and possibly other JDBC drivers.
 
