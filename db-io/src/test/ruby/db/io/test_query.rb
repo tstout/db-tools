@@ -1,4 +1,3 @@
-
 # this required gem invocation seems funky to me, but I do like minitest
 gem 'minitest'
 require 'minitest/autorun'
@@ -38,7 +37,7 @@ class TestQuery < MiniTest::Test
 
   def test_basic_read_write
     DbIo::Updates.new_update(@connForge,
-                             'insert into db_io.logs (when, msg, level, logger, thread) values (?, ?, ?, ?, ?)',
+                             'insert into db_io.logs (when, msg, level, logger_name, thread) values (?, ?, ?, ?, ?)',
                              Timestamp.new(@now),
                              'test msg',
                              'DEBUG',
@@ -51,7 +50,7 @@ class TestQuery < MiniTest::Test
     refute_equal(result.size, 0)
     assert_equal(result.first.msg, 'test msg')
     assert_equal(result.first.level, 'DEBUG')
-    assert_equal(result.first.logger, 'test.logger')
+    assert_equal(result.first.logger_name, 'test.logger')
     assert_equal(result.first.thread, 'test.thread')
     assert_equal(result.first.when, Timestamp.new(@now))
     assert_instance_of(Fixnum, result.first.id)
