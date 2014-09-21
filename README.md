@@ -45,3 +45,9 @@ implement a couple of interfaces.
 * Test with Oracle and possibly other JDBC drivers.
 
 
+#Maven Coordinates
+    <dependency>
+      <groupId>com.github.tstout</groupId>
+      <artifactId>db-io</artifactId>
+      <version>1.0.1</version>
+    </dependency>

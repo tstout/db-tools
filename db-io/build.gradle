@@ -29,8 +29,8 @@ artifacts {
     archives sourcesJar
 }
 
-//group = 'com.github.tstout'
-//version = '1.0.1'
+group = 'com.github.tstout'
+version = '1.0.1'
 
 signing {
     sign configurations.archives
