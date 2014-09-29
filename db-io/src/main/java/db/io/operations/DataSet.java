@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * Ultimate result of DB queries?? This should probably be extracted
- * to an interface. Not sure yet if having this public is beneficial.
+ * to an interface. Not sure yet if having this public would be beneficial.
  */
 class DataSet {
 

@@ -31,16 +31,16 @@ public class H2IntTest {
     @Rule
     public TestRule benchmarkRun = new BenchmarkRule();
 
-    ConnFactory conns = newConnFactory(H2_MEM, newCreds().withDBName("dbio-test"));
+    ConnFactory connFactory = newConnFactory(H2_MEM, newCreds().withDBName("dbio-test"));
 
     long now = Calendar.getInstance().getTimeInMillis();
 
     @Before
     public void setup() {
-        liquibase(conns)
-            .update(getClass(), "/db/io/migration/test-changelog.sql");
+        liquibase(connFactory)
+                .update(getClass(), "/db/io/migration/test-changelog.sql");
 
-        newUpdate(conns,
+        newUpdate(connFactory,
                 INSERT_SQL,
                 new Timestamp(now),
                 "test msg",
@@ -52,15 +52,16 @@ public class H2IntTest {
 
     @After
     public void tearDown() {
-        newUpdate(conns, "delete from db_io.logs")
+        newUpdate(connFactory, "delete from db_io.logs")
                 .run();
     }
 
     @Test
     public void basic_read_write() {
-        Query q = newQuery(conns);
+        Collection<LogRecord> result =
+                newQuery(connFactory)
+                        .run(LogRecord.class, "select * from db_io.logs");
 
-        Collection<LogRecord> result = q.run(LogRecord.class, "select * from db_io.logs");
 
         assertThat(result.size(), not(0));
 

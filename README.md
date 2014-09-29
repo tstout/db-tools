@@ -12,7 +12,7 @@ A collection of libraries and utilities for everyday database tasks.
 * Are you frustrated with a complex ORM? 
 * Have you spent way too much time looking
 on StackOverflow or stepping through library code to find the elusive incantations 
-needed to accomplish what should be simple?
+needed to make the ORM accomplish what should be simple?
 
 In summary, db.io focuses on letting your JVM-based software manipulate the database with SQL.
 db.io can make dealing with JDBC less painful. db.io provides a minimal API. 
@@ -24,17 +24,23 @@ There's not much to get between you and your data. SQL is the DSL, not db-io.
 implement or generate all that getter/setter java-bean noise. You don't even need to 
 annotate the plain old java interface.
 * All the getInt, getString, getDate, etc. on a jdbc ResultSet is automatic.
+* Need migration support for your schema? A naive migration API is 
+provided (currently a small liquibase wrapper). I'm on the fence concerning liquibase. This
+dependency may dissolve in the future.
 
-* Need migration support for your schema? Of course you do. A naive migration API is 
-provided (currently a trivial liquibase wrapper).
+#Example Usage
+Suppose you have the following select:
+                                      
 
 #db.io Caveats
-
 * I'm not happy with the update/insert interface.
 * Performance is not a goal at the moment. Vanilla java.lang.reflect.Proxy is used to
 map column metadata to an inteface.
 * Only an H2 client is bundled at the moment. Other databases should not be a major effort, provided you 
 implement a couple of interfaces.
+
+
+
 
  
 #do.io TODO 

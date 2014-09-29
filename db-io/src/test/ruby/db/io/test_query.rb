@@ -31,7 +31,7 @@ class TestQuery < MiniTest::Test
   #
   # LogRecord = Struct.new(:id, :when, :msg, :level, :logger, :thread)
   #
-  # I may support this in the near future. For the moment the inteface must
+  # I may support this in the near future. For the moment the interface must
   # be declared in java. I have not yet found a way in Jruby to define a java
   # interface, only implement one.
 
