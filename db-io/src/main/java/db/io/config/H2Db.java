@@ -7,7 +7,9 @@ import com.google.common.cache.LoadingCache;
 import db.io.core.Database;
 import org.h2.jdbcx.JdbcConnectionPool;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
+import java.util.concurrent.ExecutionException;
 
 import static com.google.common.base.Throwables.*;
 
@@ -41,10 +43,20 @@ class H2Db implements Database {
                     .newBuilder()
                     .build(loader);
 
-    @Override public Connection connection(DBCredentials cred) {
+    @Override
+    public Connection connection(DBCredentials cred) {
         try {
             return cache.get(cred).getConnection();
         } catch (Exception e) {
+            throw propagate(e);
+        }
+    }
+
+    @Override
+    public DataSource dataSource(DBCredentials creds) {
+        try {
+            return cache.get(creds);
+        } catch (ExecutionException e) {
             throw propagate(e);
         }
     }

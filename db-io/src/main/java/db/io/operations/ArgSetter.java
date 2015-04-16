@@ -128,6 +128,15 @@ class ArgSetter {
                 return Boolean.class;
             }
         },
+        DOUBLE {
+            @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
+                stmt.setDouble(index, (Double) value);
+            }
+
+            @Override Class<?> type() {
+                return Double.class;
+            }
+        },
         BIGDECIMAL {
             @Override void set(int index, PreparedStatement stmt, Object value) throws SQLException {
                 stmt.setBigDecimal(index, (BigDecimal) value);

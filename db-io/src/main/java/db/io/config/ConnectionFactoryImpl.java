@@ -3,6 +3,7 @@ package db.io.config;
 import db.io.core.ConnFactory;
 import db.io.core.Database;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 
 import static com.google.common.base.Preconditions.*;
@@ -19,5 +20,10 @@ class ConnectionFactoryImpl implements ConnFactory {
     @Override
     public Connection connection() {
         return db.connection(creds);
+    }
+
+    @Override
+    public DataSource dataSource() {
+        return db.dataSource(creds);
     }
 }
