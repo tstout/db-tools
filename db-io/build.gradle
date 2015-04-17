@@ -36,6 +36,20 @@ signing {
     sign configurations.archives
 }
 
+//
+// Here are the steps I have a hard time remembering to publish to
+// maven central:
+// 1) run the publish to maven local task
+// 2) run the uploadArchives task
+// 3) login to oss.sonatype.org
+// 4) select staging repositories tab
+// 5) filter for this group (com.github.tstout)
+// 6) select the desired build to publish
+// 7) Hit the close button
+// 8) Wait until everything is validated (look in the activites tab at the bottom)
+// 9) Once sonatype thinks your upload is good, you will have a release option
+//    at the top.
+//
 publishing {
     publications {
         maven(MavenPublication) {
