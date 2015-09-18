@@ -30,6 +30,7 @@ dependency may dissolve in the future.
 
 #Example Usage
 Suppose you have the following select:
+
                                       
 
 #db.io Caveats
@@ -41,11 +42,10 @@ implement a couple of interfaces.
 
 
 
-
  
 #do.io TODO 
 
-* Show some examples! (There arex
+* Show some examples! (There are
  tests, but that is no excuse for proper documentation)
 * Implement named query parameters
 * Test with Oracle and possibly other JDBC drivers.
@@ -55,5 +55,5 @@ implement a couple of interfaces.
     <dependency>
       <groupId>com.github.tstout</groupId>
       <artifactId>db-io</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
     </dependency>
