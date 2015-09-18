@@ -58,8 +58,9 @@ class Loader extends ClassLoaderResourceAccessor {
     }
 
     @Override public InputStream getResourceAsStream(String file) throws IOException {
-        return newInputStreamSupplier(
+
+        return asByteSource(
                 getResource(root, file))
-                .getInput();
+                .openStream();
     }
 }
