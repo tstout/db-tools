@@ -32,9 +32,9 @@ artifacts {
 group = 'com.github.tstout'
 version = '1.0.3'
 
-signing {
-    sign configurations.archives
-}
+//signing {
+//    sign configurations.archives
+//}
 
 //
 // Here are the steps I have a hard time remembering to publish to

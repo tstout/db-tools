@@ -37,7 +37,7 @@ subprojects {
     }
 
     dependencies {
-        jruby 'org.jruby:jruby-complete:1.7.8'
+        jruby 'org.jruby:jruby-complete:1.7.27'
     }
 
     project.ext {
